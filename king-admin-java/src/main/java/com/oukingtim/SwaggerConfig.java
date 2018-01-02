@@ -9,6 +9,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static com.google.common.base.Predicates.not;
 import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -18,6 +19,22 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
+
+    @Bean
+    public Docket managementApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("management")
+                .genericModelSubstitutes(DeferredResult.class)
+//                .genericModelSubstitutes(ResponseEntity.class)
+                .useDefaultResponseMessages(false)
+                .forCodeGeneration(true)
+                .pathMapping("/")
+                .select()
+                .paths(or(regex("/management/*.*")))
+                .build()
+                .apiInfo(apiInfo("management"));
+    }
 
     @Bean
     public Docket v1Api() {
@@ -30,6 +47,7 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .select()
                 .paths(or(regex("/*.*")))
+                .paths(not(regex("/management/*.*")))
                 .build()
                 .apiInfo(apiInfo("v1"));
     }
