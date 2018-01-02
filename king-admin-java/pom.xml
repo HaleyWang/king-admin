@@ -37,6 +37,8 @@
 		<restassured.version>2.3.3</restassured.version>
 		<jayway.restassured.version>2.3.3</jayway.restassured.version>
 		<fastjson.version>1.2.24</fastjson.version>
+		<springfox.version>2.6.1</springfox.version>
+
 	</properties>
 
 	<dependencies>
@@ -116,11 +118,13 @@
 			<artifactId>commons-configuration</artifactId>
 			<version>${commons-configuration-version}</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson-version}</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
@@ -149,6 +153,20 @@
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
 		</dependency>
+
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
