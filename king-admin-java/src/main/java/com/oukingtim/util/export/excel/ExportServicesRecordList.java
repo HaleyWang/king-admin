@@ -11,24 +11,22 @@ package com.oukingtim.util.export.excel;
 public class ExportServicesRecordList extends AbstractReport {
 
 //	表头   
-    private static final String[] tableHeader = {"客服人员名称","客服工号","客户名称","客户号","服务时段","服务时长","评价","应答"};
-    
-   //表头的单元格个数目   
-    private static final short cellNumber = (short)tableHeader.length; 
+    private String[] tableHeader = {};
+
+    String[] cellsFeildNames = {};
     
 	/* (non-Javadoc)
 	 * @see com.foresee.export.AbstractReport#getCellNumber()
 	 */
 	protected short getCellNumber() {
-		return cellNumber;
+		return (short)tableHeader.length;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.foresee.export.AbstractReport#getCells()
 	 */
 	protected String[] getCells() {
-		String[] cells = new String[]{"serviceName"};
-		return cells;
+		return cellsFeildNames;
 	}
 
 	/* (non-Javadoc)
@@ -38,4 +36,15 @@ public class ExportServicesRecordList extends AbstractReport {
 		return tableHeader;
 	}
 
+    public ExportServicesRecordList withTableHeader(String[] tableHeader) {
+        this.tableHeader = tableHeader;
+
+        return this;
+    }
+
+    public ExportServicesRecordList withCellsFeildNames(String[] cellsFeildNames) {
+        this.cellsFeildNames = cellsFeildNames;
+
+        return this;
+    }
 }
