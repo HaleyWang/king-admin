@@ -58,6 +58,8 @@ public class ExportGrid extends AbstractReport {
 
     public void export(Grid grid, OutputStream output) {
 
+        // TODO muti header
+        // TODO group,LV BVVVVVVVVBC       Q
         this.grid = grid;
 
         List<String> tableHeaderList = grid.getColumns().stream().map(Column::getName).collect(Collectors.toList());
