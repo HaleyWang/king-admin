@@ -3,7 +3,7 @@ package com.oukingtim.util.export.folwgrid;
 import lombok.Data;
 
 @Data
-public class FolwCell<T> {
+public class FlowCell<T> {
 
         T value;
         int rowStep;
@@ -31,7 +31,7 @@ public class FolwCell<T> {
 
 
     @Data
-    public static class GroupCellData extends FolwCell<String> {
+    public static class GroupCellData extends FlowCell<String> {
         String value;
         int rowStep = 0;
         int colStep = 2;
@@ -40,7 +40,7 @@ public class FolwCell<T> {
     }
 
     @Data
-    public static class NameCellData extends FolwCell<String> {
+    public static class NameCellData extends FlowCell<String> {
         String value;
         int rowStep = 0;
         int colStep = 0;
@@ -49,7 +49,7 @@ public class FolwCell<T> {
     }
 
     @Data
-    public static class NumCellData extends FolwCell<Integer> {
+    public static class NumCellData extends FlowCell<Integer> {
         Integer value;
         int rowStep = 0;
         int colStep = 0;

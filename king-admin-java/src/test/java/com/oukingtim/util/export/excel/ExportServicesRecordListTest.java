@@ -31,7 +31,7 @@ public class ExportServicesRecordListTest {
         a.setServiceName("a");
         List reportDatas = Arrays.asList(a);
 
-        File file = new File("/Users/haley/Documents/w/king-admin/aa.xls");
+        File file = new File("./aa.xls");
         OutputStream output = new FileOutputStream(file);
         e.export(reportHeads, reportDatas, output);
 

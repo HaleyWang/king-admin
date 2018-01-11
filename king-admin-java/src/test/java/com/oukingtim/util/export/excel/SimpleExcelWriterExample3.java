@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,77 +15,119 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.oukingtim.util.export.folwgrid.FlowRow;
 import com.oukingtim.util.export.folwgrid.FlowCell;
- 
+import com.oukingtim.util.export.folwgrid.FlowRow;
+import lombok.Data;
+
 /**
  * A very simple program that writes some data to an Excel file
  * using the Apache POI library.
  * @author www.codejava.net
  *
  */
-public class SimpleExcelWriterExample2 {
+public class SimpleExcelWriterExample3 {
 
-    static int MAX_ROW = 20;
+    private static final int CONTENT_ROW_OFFSET = 2;
 
-    static int ROW_OFFSET = 2;
+    int maxRow = 20;
+    int colOffset = 0;
+    int rowOffset = 0;
 
-    static int COL_OFFSET = 2;
+    @Data
+    public static class Group {
+        String name;
 
+        public static Group ofName(String name) {
+            Group g = new Group();
+            g.name = name;
+            return g;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        // start create excel
+        XSSFSheet sheet = workbook.createSheet("Java Books");
+
+        List<FlowRow> contentData = getContentData();
+
+        SimpleExcelWriterExample3 e = new SimpleExcelWriterExample3();
+
+        Pair<Integer, Integer> pair = e.createContent(workbook, sheet, contentData, 0, CONTENT_ROW_OFFSET, null);
+        System.out.println(pair);
+
+        SimpleExcelWriterExample3 e1 = new SimpleExcelWriterExample3();
+        Pair<Integer, Integer> pair1 = e1.createContent(workbook, sheet, contentData, pair.getLeft() + 1, CONTENT_ROW_OFFSET, Group.ofName("aa"));
+        System.out.println(pair1);
+
+        SimpleExcelWriterExample3 e12 = new SimpleExcelWriterExample3();
+        Pair<Integer, Integer> pair12 = e12.createContent(workbook, sheet, contentData, pair1.getLeft() + 1, CONTENT_ROW_OFFSET, Group.ofName("bb"));
+        System.out.println(pair12);
+
+        try (FileOutputStream outputStream = new FileOutputStream("JavaBooks6.xlsx")) {
+            workbook.write(outputStream);
+        }
+    }
+
+
+    public Pair<Integer, Integer> createContent(XSSFWorkbook workbook, XSSFSheet sheet, List<FlowRow> contentData, int colOffset, int rowOffset, Group group) {
 
         //start get data
-        List<FlowRow> bookData = new ArrayList<>();
-
-        for (int  k = 0; k < 10; k++) {
-            bookData.addAll(getFolwRows());
-        }
-
+        this.colOffset = colOffset;
+        this.rowOffset = rowOffset;
 
         // to 2 wei shu zhu
         List<List<FlowRow>> arrArr = new ArrayList<>();
 
-        int size = bookData.size();
-        int n = (int) Math.ceil(size * 1.0 / MAX_ROW) ;
+        int size = contentData.size();
+        int n = (int) Math.ceil(size * 1.0 / maxRow) ;
         for(int i = 0 ; i< n; i++) {
-            int toIdx = i * MAX_ROW +  MAX_ROW;
+            int toIdx = i * maxRow + maxRow;
             if(toIdx >= size) {
                 toIdx = size;
             }
 
-            List<FlowRow> l = bookData.subList(i * MAX_ROW, toIdx);
+            List<FlowRow> l = new ArrayList<>();
+            l.addAll(contentData.subList(i * maxRow, toIdx));
+
+            if(l.size() < maxRow) {
+                for(int m = 0, z = maxRow - l.size(); m< z; m++) {
+                    l.add(
+                        FlowRow.obj()
+                                .addCell(FlowCell.ofNameCell(""))
+                                .addCell(FlowCell.ofNameCell(""))
+                                .addCell(FlowCell.ofNameCell(""))
+                    );
+                }
+            }
             arrArr.add(i, l);
         }
 
 
         List<FlowRow> data = new ArrayList<>();
 
-        for (int i =0; i < MAX_ROW; i++) {
+        for (int i = 0; i < maxRow; i++) {
 
             FlowRow bigRow = FlowRow.obj();
-            for(int j= 0 , js = arrArr.size();  j< js ; j++ ) {
-
+            for(int j= 0 ;  j< arrArr.size() ; j++ ) {
                 if(i < arrArr.get(j).size() ) {
                     bigRow.addFolwRow (arrArr.get(j).get(i));
 
                 }
             }
-
             data.add(bigRow);
         }
 
-
-        // start create excell
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Java Books");
-
-        int rowCount = ROW_OFFSET;
+        int rowCount = group == null ? rowOffset : (rowOffset + 1);
+        int columnCountFinal = colOffset;
          
         for (FlowRow item : data) {
-            Row row = sheet.createRow(rowCount);
-             
-            int columnCount = COL_OFFSET;
+            Row row = sheet.getRow(rowCount);
+            if(row == null) {
+                row = sheet.createRow(rowCount);
+            }
+
+            int columnCount = colOffset;
              
             for (FlowCell flowCell : item.getFlowCell()) {
                 Object field = flowCell.getValue();
@@ -100,31 +143,46 @@ public class SimpleExcelWriterExample2 {
                     if (flowCell.getRowStep() > 0 || flowCell.getColStep() > 0) {
                         sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount + flowCell.getRowStep(), columnCount, columnCount + flowCell.getColStep()));
 
-
                         XSSFCellStyle cellStyle = workbook.createCellStyle();
-
-
                         setStyle(workbook, sheet, rowCount, columnCount, cellStyle);
                     }
                 }
                 columnCount++;
             }
-
+            columnCountFinal = columnCount;
             rowCount++;
-             
         }
 
+        columnCountFinal = columnCountFinal -1;
+        int rowCountFinal = rowCount -1;
 
-        try (FileOutputStream outputStream = new FileOutputStream("JavaBooks5.xlsx")) {
-            workbook.write(outputStream);
+        if(group != null) {
+            Row row = sheet.getRow(CONTENT_ROW_OFFSET);
+            Cell cell = row.createCell(colOffset);
+            cell.setCellValue(group.getName());
+            sheet.addMergedRegion(new CellRangeAddress(CONTENT_ROW_OFFSET, CONTENT_ROW_OFFSET, colOffset, columnCountFinal));
+            XSSFCellStyle cellStyle = workbook.createCellStyle();
+            setStyle(workbook, sheet, CONTENT_ROW_OFFSET, colOffset, cellStyle);
         }
+
+        return Pair.of(columnCountFinal, rowCountFinal);
+
+    }
+
+    private static List<FlowRow> getContentData() {
+        List<FlowRow> bookData = new ArrayList<>();
+
+        for (int  k = 0; k < 10; k++) {
+            bookData.addAll(getFolwRows());
+        }
+        return bookData;
     }
 
     private static List<FlowRow> getFolwRows() {
         List<FlowRow> bookData = new ArrayList<>();
 
         bookData.add(FlowRow.obj()
-                .addCell(FlowCell.ofGroupCell("FlowCell"))
+                .addCell(FlowCell.ofGroupCell("FlowCell 中文"))
                 .addCell(FlowCell.ofNameCell(null))
                 .addCell(FlowCell.ofNameCell(null))
         );
@@ -132,7 +190,7 @@ public class SimpleExcelWriterExample2 {
         for(int i = 0; i< 10; i++) {
             bookData.add(
                     FlowRow.obj()
-                            .addCell(FlowCell.ofNameCell("name" + i))
+                            .addCell(FlowCell.ofNameCell("中文" + i))
                             .addCell(FlowCell.ofNumCell(i))
                             .addCell(FlowCell.ofNameCell(""))
 

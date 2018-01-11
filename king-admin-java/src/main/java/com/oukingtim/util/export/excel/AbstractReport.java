@@ -99,8 +99,7 @@ public abstract class AbstractReport implements IReport {
             	cell = row.createCell((short)j);
     			cell.setCellType(HSSFCell.CELL_TYPE_STRING);
     			//cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-    			//cell.setCellStyle(SheetStyle.getIndagateHeaderStyle(workBook));
-    			
+    			cell.setCellStyle(SheetStyle.getIndagateHeaderStyle(workBook));
             }
 
 

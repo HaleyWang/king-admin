@@ -36,7 +36,7 @@ public class ExportGridTest {
         grid.setColumns(Arrays.asList(column, column1));
         grid.setRows(Arrays.asList(row, row1));
 
-        File file = new File("/Users/haley/Documents/w/king-admin/grid.xls");
+        File file = new File("./grid.xls");
         OutputStream output = new FileOutputStream(file);
 
         ExportGrid eg = new ExportGrid();
