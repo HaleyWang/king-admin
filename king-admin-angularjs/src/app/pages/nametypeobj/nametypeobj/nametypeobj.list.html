@@ -1,22 +1,25 @@
-<div ba-panel ba-panel-title="字典列表" ba-panel-class="xmedium-panel with-scroll light-text">
+<div ba-panel ba-panel-title="列表" ba-panel-class="xmedium-panel with-scroll light-text">
     <div class="row add-row-editable-table">
         <div class="col-md-4">
             <button has-perms='dict.dict.add' class="btn btn-success btn-with-icon" ng-click="kt.addRow()">
                 <i class="ion-plus-round"></i>新增
             </button>
         </div>
+
+
+
         <div class="col-md-offset-8">
 
             <div class="form-group col-md-2 " style="padding: 8Px 0 0 18px;">
 
-                <label for="dictClassId">分类</label>
+                <label for="nameTypeId">分类</label>
 
             </div>
             <div class="form-group col-md-5 ">
 
 
-                <select ng-disabled="false" ng-change="kt.LoadPage()" class="form-control selectpicker show-tick" data-container="body" ng-model="kt.tableState.search.dictClassId" id="dictClassId" title="分类" ng-options="item.id as item.code for item in kt.dictClassList">
-                </select>
+                <select ng-disabled="false" ng-change="kt.LoadPage()" class="form-control selectpicker show-tick" data-container="body" ng-model="kt.tableState.search.nameTypeId" id="nameTypeId" title="分类" ng-options="item.id as item.name for item in kt.dictClassList">
+                    </select>
 
             </div>
 
@@ -24,27 +27,32 @@
                 <input type="text" class="form-control form-control-rounded" ng-model="kt.tableState.search.text" input-keyup="kt.LoadPage" placeholder="名称">
             </div>
         </div>
+
+
+
     </div>
     <table class="table table-bordered table-hover table-condensed" st-pipe="kt.LoadPage" st-table="dictlist">
         <thead>
             <tr class="sortable">
-                <th>
+                <th style="display:none">
                     <label class="table-checkbox checkbox-inline custom-checkbox nowrap">
                     <input type="checkbox" ng-model="kt.checkboxes.checked">
                     <span></span>
                 </label>
                 </th>
                 <th>序号</th>
-                <th st-sort="dictClassId">分类编号</th>
-                <th st-sort="code">编号</th>
-                <th st-sort="text">名称</th>
+
+                <th st-sort="name">名称</th>
+                <th st-sort="customerGroupId">分类编号</th>
+                <th st-sort="phone">电话1</th>
+                <th st-sort="phone1">电话2</th>
                 <th st-sort="remark">备注</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="dict in kt.dictlist" class="editable-row">
-                <td class="check-td">
+                <td style="display:none" class="check-td">
                     <div class="mail-checkbox">
                         <label class="checkbox-inline custom-checkbox nowrap">
                         <input type="checkbox" ng-model="kt.checkboxes.items[dict.id]">
@@ -57,21 +65,33 @@
                     </div>
                 </td>
                 <td>{{$index+1}}</td>
+
                 <td>
-                    <span editable-select="dict.dictClassId" e-name="dictClassId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.code for s in kt.dictClassList">
-                  {{ kt.showClassCode(dict.dictClassId) }}
+                    <span editable-text="dict.name" e-name="name" e-form="rowform" e-required>
+                {{dict.name}}
                 </span>
                 </td>
+
                 <td>
-                    <span editable-text="dict.code" e-name="code" e-form="rowform" e-required>
-                {{dict.code}}
-                </span>
+                    <span editable-select="dict.nameTypeId" e-name="nameTypeId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.dictClassList">
+                          {{ kt.showGroupName(dict.nameTypeId) }}
+                        </span>
                 </td>
+
+                <td> <span editable-text="dict.phone" e-name="phone" e-form="rowform" e-required>
+                    {{dict.phone}}
+                    </span>
+
+                </td>
+
                 <td>
-                    <span editable-text="dict.text" e-name="text" e-form="rowform" e-required>
-                {{dict.text}}
-                </span>
+                    <span editable-text="dict.phone1" e-name="phone1" e-form="rowform" e-required>
+                                {{dict.phone1}}
+                                </span>
+
                 </td>
+
+
                 <td>
                     <span editable-text="dict.remark" e-name="remark" e-form="rowform">
                 {{dict.remark}}
@@ -79,7 +99,7 @@
                 </td>
                 <td>
                     <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="kt.inserted == dict">
-                        <button type="submit" ng-disabled="rowform.$data.code==null||rowform.$data.code==''" ng-click="kt.save(rowform.$data)" class="btn btn-info editable-table-button btn-xs">
+                        <button type="submit" ng-disabled="rowform.$data.name==null||rowform.$data.name==''" ng-click="kt.save(rowform.$data)" class="btn btn-info editable-table-button btn-xs">
                         保存
                     </button>
                         <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">

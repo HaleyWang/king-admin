@@ -4,17 +4,24 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.oukingtim.domain.BaseModel;
+import com.oukingtim.domain.customer.CustomerGroup;
 import com.oukingtim.util.ShiroUtils;
 import com.oukingtim.util.StringTools;
+import com.oukingtim.util.excel.FileUtil;
+import com.oukingtim.util.exception.NormalException;
 import com.oukingtim.web.vm.ResultVM;
 import com.oukingtim.web.vm.SmartPageVM;
+import com.oukingtim.web.vm.SmartPagination;
+import com.oukingtim.web.vm.SmartSort;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 通用Controller（增删改查）
@@ -24,6 +31,41 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
 
     @Autowired
     protected S service;
+
+    @GetMapping("export")
+    public void export(HttpServletResponse response, SmartPageVM<T> spage,
+                       String head, String sheetName, String fileName) throws NormalException {
+
+
+        if(spage == null) {
+            spage = new SmartPageVM<>();
+
+        }
+        if(spage.getPagination() == null) {
+
+            SmartPagination p = new SmartPagination();
+            p.setStart(0);
+            p.setNumberOfPages(0);
+            p.setNumber(1000);
+            spage.setPagination(p);
+
+        }
+        if(spage.getSort() == null) {
+
+            SmartSort sort = new SmartSort();
+            sort.setPredicate("id");
+            spage.setSort(sort);
+        }
+
+        ResultVM result = getSmartData(spage);
+
+
+        Page<T> page = (Page<T>)result.getResult();
+        List<T> list = page.getRecords();
+
+        //导出操作
+        FileUtil.exportExcel(list, head, sheetName, CustomerGroup.class, fileName,response);
+    }
 
     /**
      * 根据smarttable对象分页查询

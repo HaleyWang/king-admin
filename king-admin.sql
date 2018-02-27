@@ -193,8 +193,70 @@ CREATE TABLE `tb_todo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='todo表';
 
+#tb_customer
+DROP TABLE IF EXISTS `tb_customer`;
+
+CREATE TABLE `tb_customer` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `phone1` varchar(255) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `customer_group_id` varchar(32) DEFAULT NULL,
+  `create_user_id` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_user_id` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tb_customer';
+
+
+
+CREATE TABLE `tb_customer_group` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `create_user_id` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_user_id` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tb_customer_group';
+
+
+
+CREATE TABLE `tb_name_type` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `create_user_id` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_user_id` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tb_name_type';
+
+
+
+CREATE TABLE `tb_name_type_obj` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `name_type_id` varchar(32) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `create_user_id` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_user_id` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tb_name_type_obj';
+
+
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+
+

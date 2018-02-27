@@ -1,27 +1,13 @@
-<div ba-panel ba-panel-title="字典列表" ba-panel-class="xmedium-panel with-scroll light-text">
+<div ba-panel ba-panel-title="分类" ba-panel-class="xmedium-panel with-scroll light-text">
     <div class="row add-row-editable-table">
         <div class="col-md-4">
-            <button has-perms='dict.dict.add' class="btn btn-success btn-with-icon" ng-click="kt.addRow()">
+            <button has-perms='dict.dictclass.add' class="btn btn-success btn-with-icon" ng-click="kt.addRow()">
                 <i class="ion-plus-round"></i>新增
             </button>
         </div>
-        <div class="col-md-offset-8">
-
-            <div class="form-group col-md-2 " style="padding: 8Px 0 0 18px;">
-
-                <label for="dictClassId">分类</label>
-
-            </div>
-            <div class="form-group col-md-5 ">
-
-
-                <select ng-disabled="false" ng-change="kt.LoadPage()" class="form-control selectpicker show-tick" data-container="body" ng-model="kt.tableState.search.dictClassId" id="dictClassId" title="分类" ng-options="item.id as item.code for item in kt.dictClassList">
-                </select>
-
-            </div>
-
-            <div class="form-group col-md-4 ">
-                <input type="text" class="form-control form-control-rounded" ng-model="kt.tableState.search.text" input-keyup="kt.LoadPage" placeholder="名称">
+        <div class="col-md-2 col-md-offset-6 ">
+            <div class="form-group">
+                <input type="text" class="form-control form-control-rounded" ng-model="kt.tableState.search.code" input-keyup="kt.LoadPage" placeholder="编号">
             </div>
         </div>
     </div>
@@ -35,9 +21,7 @@
                 </label>
                 </th>
                 <th>序号</th>
-                <th st-sort="dictClassId">分类编号</th>
-                <th st-sort="code">编号</th>
-                <th st-sort="text">名称</th>
+                <th st-sort="code">名称</th>
                 <th st-sort="remark">备注</th>
                 <th>操作</th>
             </tr>
@@ -58,18 +42,8 @@
                 </td>
                 <td>{{$index+1}}</td>
                 <td>
-                    <span editable-select="dict.dictClassId" e-name="dictClassId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.code for s in kt.dictClassList">
-                  {{ kt.showClassCode(dict.dictClassId) }}
-                </span>
-                </td>
-                <td>
-                    <span editable-text="dict.code" e-name="code" e-form="rowform" e-required>
-                {{dict.code}}
-                </span>
-                </td>
-                <td>
-                    <span editable-text="dict.text" e-name="text" e-form="rowform" e-required>
-                {{dict.text}}
+                    <span editable-text="dict.name" e-name="name" e-form="rowform" e-required>
+                {{dict.name}}
                 </span>
                 </td>
                 <td>
@@ -79,7 +53,7 @@
                 </td>
                 <td>
                     <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="kt.inserted == dict">
-                        <button type="submit" ng-disabled="rowform.$data.code==null||rowform.$data.code==''" ng-click="kt.save(rowform.$data)" class="btn btn-info editable-table-button btn-xs">
+                        <button type="submit" ng-disabled="rowform.$data.name==null||rowform.$data.name==''" ng-click="kt.save(rowform.$data)" class="btn btn-info editable-table-button btn-xs">
                         保存
                     </button>
                         <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
@@ -87,9 +61,9 @@
                     </button>
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
-                        <button has-perms='dict.dict.edit' class="btn btn-warning editable-table-button btn-xs btn-with-icon" ng-click="rowform.$show()"><i class="ion-edit"></i>编辑
+                        <button has-perms='dict.dictclass.edit' class="btn btn-warning editable-table-button btn-xs btn-with-icon" ng-click="rowform.$show()"><i class="ion-edit"></i>编辑
                     </button>
-                        <button has-perms='dict.dict.delete' class="btn btn-danger editable-table-button btn-xs btn-with-icon" ng-click="kt.del(dict.id)"><i class="ion-trash-a"></i>删除
+                        <button has-perms='dict.dictclass.delete' class="btn btn-danger editable-table-button btn-xs btn-with-icon" ng-click="kt.del(dict.id)"><i class="ion-trash-a"></i>删除
                     </button>
                     </div>
                 </td>
@@ -97,7 +71,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="7" class="text-center">
+                <td colspan="5" class="text-center">
                     <div st-pagination="" st-items-by-page="5"></div>
                 </td>
             </tr>
