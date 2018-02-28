@@ -71,7 +71,7 @@
         function getInfo(param, callback) {
             rest.get(param,
                 function(data) {
-                    console.log(data);
+                    console.log('getInfo', data);
                     callback(data);
                 },
                 function(error) {

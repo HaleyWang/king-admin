@@ -5,10 +5,25 @@
         .controller('CustomerListCtrl', CustomerListCtrl);
 
     /** @ngInject */
-    function CustomerListCtrl($scope, $filter, toastr, CustomerService, CustomerGroupService) {
+    function CustomerListCtrl($scope, $filter, toastr, CustomerService, CustomerGroupService, $uibModal) {
         var kt = this;
         kt.dictlist = [];
         kt.dictClassList = [];
+
+        $scope.open = function(page, size) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                resolve: {
+                    items: function() {
+                        return $scope.items;
+                    }
+                }
+            });
+        };
+
+
 
         CustomerGroupService.getList({}, function(data) {
             kt.dictClassList = data.result;

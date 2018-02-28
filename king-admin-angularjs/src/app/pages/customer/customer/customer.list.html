@@ -1,5 +1,28 @@
 <div ba-panel ba-panel-title="客户列表" ba-panel-class="xmedium-panel with-scroll light-text">
     <div class="row add-row-editable-table">
+
+        <div class="modal-buttons clearfix">
+            <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="open('app/pages/customer/customer/customer.add.html', 'md')">Default modal</button>
+            <button type="button" class="btn btn-success" data-toggle="modal" ng-click="open('app/pages/common/modalTemplates/largeModal.html', 'lg')">
+                      Large modal
+                    </button>
+            <button type="button" class="btn btn-warning" data-toggle="modal" ng-click="open('app/pages/common/modalTemplates/smallModal.html', 'sm')">
+                      Small modal
+                    </button>
+        </div>
+
+        <div ba-panel ba-panel-class="with-scroll light-text">
+            <button has-perms='sys.menu.add' ng-show="!kt.isShowAddBtn" class="btn btn-success btn-with-icon" ui-sref="customer.customer.add({id:kt.customer.id,isAdd:true})">
+                    <i class="ion-plus-round"></i>新增
+                </button>
+            <button has-perms='sys.menu.edit1' class="btn btn-warning btn-with-icon" ui-sref="customer.customer.edit({id:kt.customer.id})">
+                    <i class="ion-edit"></i>编辑
+                </button>
+            <button has-perms='sys.menu.delete1' ng-show="!kt.isShowDelBtn" class="btn btn-danger btn-with-icon" ng-click="kt.del(kt.menu.id)">
+                    <i class="ion-trash-a"></i>删除
+                </button>
+        </div>
+
         <div class="col-md-4">
             <button has-perms='dict.dict.add' class="btn btn-success btn-with-icon" ng-click="kt.addRow()">
                 <i class="ion-plus-round"></i>新增
@@ -91,6 +114,11 @@
                     </button>
                         <button has-perms='dict.dict.delete' class="btn btn-danger editable-table-button btn-xs btn-with-icon" ng-click="kt.del(dict.id)"><i class="ion-trash-a"></i>删除
                     </button>
+
+                        <button has-perms='sys.menu.edit' class="btn btn-warning btn-with-icon" ui-sref="customer.customer.edit({id:dict.id})">
+                            <i class="ion-edit"></i>编辑
+                        </button>
+
                     </div>
                 </td>
             </tr>
