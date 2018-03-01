@@ -7,7 +7,7 @@
         .controller('CustomerCtrl', CustomerCtrl);
 
     /** @ngInject */
-    function CustomerCtrl($scope, $stateParams, $state, $uibModalInstance, $filter, toastr, CustomerService, CustomerGroupService) {
+    function CustomerCtrl($scope, $stateParams, $state, $uibModalInstance, $filter, toastr, CustomerService, MarketService, CustomerGroupService) {
 
         var kt = this;
         kt.menu = {};
@@ -17,7 +17,7 @@
             kt.isAdd = false;
         }
 
-        kt.types = [];
+        kt.marketList = [];
         if (!kt.isAdd && $stateParams.id) {
 
             CustomerService.getInfo({ id: $stateParams.id },
@@ -28,6 +28,13 @@
         } else {
 
         }
+
+
+
+        MarketService.getList(function(data) {
+            kt.marketList = data.result;
+            kt.isShowType = true;
+        });
 
         kt.save = function() {
             console.log(kt.customer);

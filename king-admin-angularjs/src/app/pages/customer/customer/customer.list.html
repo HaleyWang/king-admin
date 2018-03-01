@@ -1,7 +1,7 @@
 <div ba-panel ba-panel-title="客户列表" ba-panel-class="xmedium-panel with-scroll light-text">
     <div class="row add-row-editable-table">
 
-        <div class="modal-buttons clearfix">
+        <div style="display:none" class="modal-buttons clearfix">
             <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="open('app/pages/customer/customer/customer.add.html', 'md')">Default modal</button>
             <button type="button" class="btn btn-success" data-toggle="modal" ng-click="open('app/pages/common/modalTemplates/largeModal.html', 'lg')">
                       Large modal
@@ -11,22 +11,13 @@
                     </button>
         </div>
 
-        <div ba-panel ba-panel-class="with-scroll light-text">
-            <button has-perms='sys.menu.add' ng-show="!kt.isShowAddBtn" class="btn btn-success btn-with-icon" ui-sref="customer.customer.add({id:kt.customer.id,isAdd:true})">
-                    <i class="ion-plus-round"></i>新增
-                </button>
-            <button has-perms='sys.menu.edit1' class="btn btn-warning btn-with-icon" ui-sref="customer.customer.edit({id:kt.customer.id})">
-                    <i class="ion-edit"></i>编辑
-                </button>
-            <button has-perms='sys.menu.delete1' ng-show="!kt.isShowDelBtn" class="btn btn-danger btn-with-icon" ng-click="kt.del(kt.menu.id)">
-                    <i class="ion-trash-a"></i>删除
-                </button>
-        </div>
 
         <div class="col-md-4">
-            <button has-perms='dict.dict.add' class="btn btn-success btn-with-icon" ng-click="kt.addRow()">
-                <i class="ion-plus-round"></i>新增
-            </button>
+            <button has-perms='sys.menu.add' ng-show="!kt.isShowAddBtn" class="btn btn-success btn-with-icon" ui-sref="customer.customer.add({id:kt.customer.id,isAdd:true})">
+                        <i class="ion-plus-round"></i>新增
+                    </button>
+
+
         </div>
         <div class="col-md-2 col-md-offset-6">
             <div class="form-group">
@@ -44,13 +35,21 @@
                 </label>
                 </th>
                 <th>序号</th>
-
+                <th st-sort="customerCode">客户代号</th>
+                <th st-sort="customerNum">客户编码</th>
                 <th st-sort="name">名称</th>
-                <th st-sort="customerGroupId">分类编号</th>
+                <th st-sort="marketId">市场</th>
+                <th st-sort="marketId">市场简写</th>
                 <th st-sort="phone">电话1</th>
                 <th st-sort="phone1">电话2</th>
+                <th st-sort="identityNum">身份证</th>
+                <th style="min-width:150px" st-sort="address">地址</th>
                 <th st-sort="remark">备注</th>
                 <th>操作</th>
+
+
+
+
             </tr>
         </thead>
         <tbody>
@@ -67,7 +66,23 @@
                     </span>
                     </div>
                 </td>
-                <td>{{$index+1}}</td>
+
+                <td>
+                    {{$index+1}}
+
+                </td>
+
+                <td>
+                    <span editable-text="dict.customerCode" e-name="customerCode" e-form="rowform" e-required>
+                    {{dict.customerCode}}
+                    </span>
+                </td>
+
+                <td>
+                    <span editable-text="dict.customerNum" e-name="customerNum" e-form="rowform" e-required>
+                        {{dict.customerNum}}
+                        </span>
+                </td>
 
                 <td>
                     <span editable-text="dict.name" e-name="name" e-form="rowform" e-required>
@@ -75,10 +90,18 @@
                 </span>
                 </td>
 
+
+
                 <td>
-                    <span editable-select="dict.customerGroupId" e-name="customerGroupId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.dictClassList">
-                          {{ kt.showGroupName(dict.customerGroupId) }}
+                    <span editable-select="dict.marketId" e-name="marketId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.marketList">
+                          {{ kt.showMarketName(dict.marketId) }} 
                         </span>
+                </td>
+
+                <td>
+                    <span editable-select="dict.marketId" e-name="marketId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.marketList">
+                              {{ kt.showMarketCode(dict.marketId) }}
+                            </span>
                 </td>
 
                 <td> <span editable-text="dict.phone" e-name="phone" e-form="rowform" e-required>
@@ -91,6 +114,16 @@
                     <span editable-text="dict.phone1" e-name="phone1" e-form="rowform" e-required>
                                 {{dict.phone1}}
                                 </span>
+
+                </td>
+                <td>
+                    {{dict.identityNum}}
+                </td>
+
+                <td>
+                    <span editable-text="dict.address" e-name="address" e-form="rowform" e-required>
+                                    {{dict.address}}
+                                    </span>
 
                 </td>
 
@@ -110,23 +143,27 @@
                     </button>
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
-                        <button has-perms='dict.dict.edit' class="btn btn-warning editable-table-button btn-xs btn-with-icon" ng-click="rowform.$show()"><i class="ion-edit"></i>编辑
-                    </button>
-                        <button has-perms='dict.dict.delete' class="btn btn-danger editable-table-button btn-xs btn-with-icon" ng-click="kt.del(dict.id)"><i class="ion-trash-a"></i>删除
-                    </button>
 
-                        <button has-perms='sys.menu.edit' class="btn btn-warning btn-with-icon" ui-sref="customer.customer.edit({id:dict.id})">
-                            <i class="ion-edit"></i>编辑
+                        <button has-perms='customer.customer.edit' class="btn btn-warning editable-table-button btn-xs btn-with-icon" ui-sref="customer.customer.edit({id:dict.id})">
+                                    <i class="ion-edit"></i>编辑
+                                </button>
+
+
+                        <button has-perms='dict.dict.delete' class="btn btn-danger editable-table-button btn-xs btn-with-icon" ng-click="kt.del(dict.id)"><i class="ion-trash-a"></i>删除
                         </button>
+
+
 
                     </div>
                 </td>
             </tr>
         </tbody>
         <tfoot>
+
+
             <tr>
-                <td colspan="7" class="text-center">
-                    <div st-pagination="" st-items-by-page="5"></div>
+                <td colspan="12" class="text-center">
+                    <div st-pagination="" st-items-by-page="5" st-template="app/pages/common/pagination.html"></div>
                 </td>
             </tr>
         </tfoot>

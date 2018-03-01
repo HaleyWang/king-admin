@@ -1,20 +1,18 @@
 (function() {
     'use strict';
 
-    angular.module('KingAdmin.pages.customer', [
-        'KingAdmin.pages.customer.customer',
-        'KingAdmin.pages.customer.market',
-        'KingAdmin.pages.customer.customergroup',
+    angular.module('KingAdmin.pages.order', [
+        'KingAdmin.pages.order.order'
     ]).config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('customer', {
-                url: '/customer',
+            .state('order', {
+                url: '/order',
                 template: '<ui-view></ui-view>',
                 abstract: true,
-                title: '客户管理',
+                title: '订单管理',
                 sidebarMeta: {
                     icon: 'ion-grid',
                     order: 300,

@@ -9,7 +9,8 @@
             'KingAdmin.pages.sys',
             'KingAdmin.pages.dict',
             'KingAdmin.pages.nametypeobj',
-            'KingAdmin.pages.customer'
+            'KingAdmin.pages.customer',
+            'KingAdmin.pages.order'
 
         ])
         .config(routeConfig);

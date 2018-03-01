@@ -16,11 +16,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Customer extends BaseModel<com.oukingtim.domain.customer.Customer> {
 
+    private String customerCode;
+    private String customerNum;
     private String name;
+    private String marketId;
     private String phone;
     private String phone1;
+    private String address;
+    private String identityNum;
     private String remark;
     private String customerGroupId;
+
 
 
 }

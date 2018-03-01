@@ -5,6 +5,9 @@
             </button>
         <h4 class="modal-title">编辑菜单</h4>
     </div>
+
+
+
     <div class="modal-body">
         <div ba-panel ba-panel-class="with-scroll light-text">
             <form name="Form" ng-submit="kt.save()">
@@ -12,27 +15,48 @@
                     <label for="name">名称</label>
                     <input ng-disabled="kt.isView" type="text" class="form-control" id="name" placeholder="名称" ng-model="kt.customer.name" required>
                 </div>
+
                 <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                    <label for="icon">图标</label>
-                    <input ng-disabled="kt.isView" type="text" class="form-control" id="icon" placeholder="图标" ng-model="kt.menu.icon">
+                    <label for="customerCode">客户代码</label>
+                    <input ng-disabled="kt.isView" type="text" class="form-control" id="customerCode" placeholder="客户代码" ng-model="kt.customer.customerCode" required>
                 </div>
+
                 <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                    <label for="title">标题</label>
-                    <input ng-disabled="kt.isView" type="text" class="form-control" id="title" placeholder="标题" ng-model="kt.menu.title">
+                    <label for="customerCode">编码</label>
+                    <input ng-disabled="kt.isView" type="text" class="form-control" id="customerNum" placeholder="客户编码" ng-model="kt.customer.customerNum" required>
                 </div>
+
                 <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                    <label for="level">目录层级</label>
-                    <input ng-disabled="kt.isView" type="number" class="form-control" id="level" placeholder="目录层级" ng-model="kt.menu.level">
+                    <label for="customerCode">电话1</label>
+                    <input ng-disabled="kt.isView" type="text" class="form-control" id="customerNum" placeholder="电话" ng-model="kt.customer.phone">
                 </div>
+
                 <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                    <label for="order">排序号</label>
-                    <input ng-disabled="kt.isView" type="number" class="form-control" id="order" placeholder="排序号" ng-model="kt.menu.order">
+                    <label for="customerCode">电话2</label>
+                    <input ng-disabled="kt.isView" type="text" class="form-control" id="customerNum" placeholder="电话" ng-model="kt.customer.phone1">
                 </div>
+
+
+
+                <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                    <label for="customerCode">身份证</label>
+                    <input ng-disabled="kt.isView" type="text" class="form-control" id="identityNum" placeholder="身份证" ng-model="kt.customer.identityNum">
+                </div>
+
+                <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                    <label for="customerCode">地址</label>
+                    <input ng-disabled="kt.isView" type="text" class="form-control" id="customerNum" placeholder="地址" ng-model="kt.customer.address">
+                </div>
+
+
+
                 <div class="form-group col-md-6 col-sm-6 col-xs-6" ng-if="kt.isShowType">
                     <label for="type">类型</label>
-                    <select ng-disabled="kt.isView" class="form-control" ng-model="kt.menu.type" id="type" title="类型" data-container="body" selectpicker required ng-options="item.code as item.text for item in kt.types">
+                    <select ng-disabled="kt.isView" class="form-control" ng-model="kt.customer.marketId" id="type" title="类型" data-container="body" selectpicker required ng-options="item.id as item.name for item in kt.marketList">
                         </select>
                 </div>
+
+
                 <div class="form-group col-md-6 col-sm-6 col-xs-6">
                     <button type="submit" class="btn btn-danger btn-with-icon" ng-if="!kt.isView">
                             <i class="ion-heart"></i>保存

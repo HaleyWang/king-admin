@@ -5,10 +5,11 @@
         .controller('CustomerListCtrl', CustomerListCtrl);
 
     /** @ngInject */
-    function CustomerListCtrl($scope, $filter, toastr, CustomerService, CustomerGroupService, $uibModal) {
+    function CustomerListCtrl($scope, $filter, toastr, CustomerService, MarketService, CustomerGroupService, $uibModal) {
         var kt = this;
         kt.dictlist = [];
         kt.dictClassList = [];
+        kt.marketList = [];
 
         $scope.open = function(page, size) {
             $uibModal.open({
@@ -25,8 +26,8 @@
 
 
 
-        CustomerGroupService.getList({}, function(data) {
-            kt.dictClassList = data.result;
+        MarketService.getList({}, function(data) {
+            kt.marketList = data.result;
         });
         kt.showGroupName = function(customerGroupId) {
             var selected = [];
@@ -35,6 +36,25 @@
             }
             return selected.length ? selected[0].name : '请选择分类';
         };
+        //showMarketCode
+        kt.showMarketCode = function(customerGroupId) {
+            var selected = [];
+            if (customerGroupId) {
+                selected = $filter('filter')(kt.marketList, { id: customerGroupId });
+            }
+            return selected.length ? selected[0].marketCode : '请选择分类';
+        };
+
+        //showMarketName
+        kt.showMarketName = function(customerGroupId) {
+            var selected = [];
+            if (customerGroupId) {
+                selected = $filter('filter')(kt.marketList, { id: customerGroupId });
+            }
+            return selected.length ? selected[0].name : '请选择分类';
+        };
+
+
         kt.addRow = function() {
             kt.inserted = {
                 id: null,
