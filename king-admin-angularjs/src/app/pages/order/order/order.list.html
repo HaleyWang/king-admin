@@ -14,48 +14,65 @@
     <table class="table table-bordered table-hover table-condensed" st-pipe="kt.LoadPage" st-table="dictlist">
         <thead>
             <tr class="sortable">
-                <th>
-                    <label class="table-checkbox checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="kt.checkboxes.checked">
-                    <span></span>
-                </label>
-                </th>
-                <th>序号</th>
+
+                <th style="width:30px">序号</th>
                 <th st-sort="orderDate">日期</th>
                 <th st-sort="wholesalerId">批发商姓名</th>
-                <th st-sort="warehouseNum">仓号</th>
+                <th style="width:30px" st-sort="warehouseNum">仓号</th>
                 <th st-sort="customerNum">购货人姓名</th>
-                <th st-sort="num">出场数量</th>
+                <th style="width:30px" st-sort="num">出场数量</th>
                 <th st-sort="addressId">送达地点</th>
 
-                <th st-sort="remark">备注</th>
-                <th>操作</th>
+                <th style="min-width:90px" st-sort="remark">备注</th>
+                <th style="width:175px">操作</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="dict in kt.dictlist" class="editable-row">
-                <td class="check-td">
-                    <div class="mail-checkbox">
-                        <label class="checkbox-inline custom-checkbox nowrap">
-                        <input type="checkbox" ng-model="kt.checkboxes.items[dict.id]">
-                        <span></span>
-                    </label>
-                    </div>
+
+                <td ng-show="false">
                     <div ng-show="false">
                         <span e-name="id" e-form="rowform" editable-text="dict.id">
-                    </span>
+                            </span>
                     </div>
                 </td>
+
                 <td>{{$index+1}}</td>
                 <td>
                     <span editable-text="dict.orderDate" e-name="orderDate" e-form="rowform" e-required>
-                {{dict.orderDate}}
+                {{kt.showDay(dict.orderDate)}}
                 </span>
                 </td>
+
                 <td>
-                    <span editable-text="dict.marketCode" e-name="marketCode" e-form="rowform" e-required>
-                    {{dict.marketCode}}
+                    <span editable-select="dict.wholesalerId" e-name="wholesalerId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.wholesalers">
+                              {{ kt.showWholesalerName(dict.wholesalerId) }} 
+                            </span>
+                </td>
+
+                <td>
+                    <span editable-text="dict.warehouseNum" e-name="warehouseNum" e-form="rowform">
+                    {{dict.warehouseNum}}
                     </span>
+                </td>
+
+
+                <td>
+                    <span editable-select="dict.customerId" e-name="customerId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.customers">
+                                  {{ kt.showCustomerName(dict.customerId) }} 
+                                </span>
+                </td>
+
+                <td>
+                    <span editable-text="dict.num" e-name="num" e-form="rowform">
+                        {{dict.num}}
+                        </span>
+                </td>
+
+                <td>
+                    <span editable-select="dict.addressId" e-name="addressId" e-form="rowform" e-selectpicker e-ng-options="s.id as s.name for s in kt.addressList">
+                                  {{ kt.showAddressName(dict.addressId) }} 
+                                </span>
                 </td>
 
                 <td>
@@ -65,7 +82,7 @@
                 </td>
                 <td>
                     <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="kt.inserted == dict">
-                        <button type="submit" ng-disabled="rowform.$data.name==null||rowform.$data.name==''" ng-click="kt.save(rowform.$data)" class="btn btn-info editable-table-button btn-xs">
+                        <button type="submit" ng-disabled="rowform.$data.orderDate==null||rowform.$data.orderDate==''" ng-click="kt.save(rowform.$data)" class="btn btn-info editable-table-button btn-xs">
                         保存
                     </button>
                         <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
@@ -83,7 +100,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="6" class="text-center">
+                <td colspan="10" class="text-center">
                     <div st-pagination="" st-items-by-page="5"></div>
                 </td>
             </tr>

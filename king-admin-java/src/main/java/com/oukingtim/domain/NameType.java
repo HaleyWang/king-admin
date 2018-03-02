@@ -13,8 +13,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class NameType extends BaseModel<com.oukingtim.domain.NameType> {
 
+    private String code;
     private String name;
 
 
+    public NameType withCode(String code) {
+        this.code = code;
+        return this;
+    }
 
 }

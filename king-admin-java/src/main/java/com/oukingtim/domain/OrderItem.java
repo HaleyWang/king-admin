@@ -16,12 +16,13 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 public class OrderItem extends BaseModel<com.oukingtim.domain.OrderItem> {
 
-    private String customerNum;
+    private String customerId;
     private Integer num;
     private String warehouseNum;
     private String wholesalerId;
     private String addressId;
     private Date orderDate;
+    private String remark;
 
 
 

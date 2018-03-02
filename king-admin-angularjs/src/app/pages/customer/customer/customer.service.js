@@ -79,8 +79,8 @@
                 })
         }
 
-        function getList(code, callback) {
-            $resource('api/customer/getlist/:code').get({ code: code },
+        function getList(callback) {
+            $resource('api/customer/getlist').get({},
                 function(data) {
                     console.log(data);
                     callback(data);

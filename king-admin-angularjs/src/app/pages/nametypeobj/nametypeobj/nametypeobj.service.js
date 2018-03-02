@@ -80,9 +80,10 @@
         }
 
         function getList(code, callback) {
+            console.log("-----", code);
             $resource('api/name_type_obj/getlist/:code').get({ code: code },
                 function(data) {
-                    console.log(data);
+                    console.log("#### ", data);
                     callback(data);
                 },
                 function(error) {

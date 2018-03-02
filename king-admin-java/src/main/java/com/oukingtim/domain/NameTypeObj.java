@@ -18,6 +18,13 @@ public class NameTypeObj extends BaseModel<com.oukingtim.domain.NameTypeObj> {
     private String name;
     private String nameTypeId;
     private String remark;
+
+
+
+    public NameTypeObj widthNameTypeId(String nameTypeId) {
+        this.nameTypeId = nameTypeId;
+        return  this;
+    }
 }
 
 

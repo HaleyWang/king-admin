@@ -80,6 +80,8 @@
         }
 
         function getList(param, callback) {
+            console.log("-----1", param);
+
             $resource('api/name_type/getlist').get(param,
                 function(data) {
                     console.log(data);
