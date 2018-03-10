@@ -1,19 +1,13 @@
 package com.oukingtim.util.excel.read;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +22,7 @@ public class ReadExcelUtils {
     private Workbook wb;
     private Sheet sheet;
     private Row row;
+    InputStream is;
 
     public ReadExcelUtils(String filepath) {
         if(filepath==null){
@@ -36,9 +31,51 @@ public class ReadExcelUtils {
         String ext = filepath.substring(filepath.lastIndexOf("."));
         try {
             InputStream is = new FileInputStream(filepath);
+            this.is = is;
             if(".xls".equals(ext)){
                 wb = new HSSFWorkbook(is);
             }else if(".xlsx".equals(ext)){
+                wb = new XSSFWorkbook(is);
+            }else{
+                wb=null;
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("FileNotFoundException", e);
+        } catch (IOException e) {
+            logger.error("IOException", e);
+        }
+    }
+
+    public ReadExcelUtils(File file, boolean xlsx) {
+        if(file==null){
+            return;
+        }
+        try {
+            InputStream is = new FileInputStream(file);
+            this.is = is;
+            if(!xlsx){
+                wb = new HSSFWorkbook(is);
+            }else if(xlsx){
+                wb = new XSSFWorkbook(is);
+            }else{
+                wb=null;
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("FileNotFoundException", e);
+        } catch (IOException e) {
+            logger.error("IOException", e);
+        }
+    }
+
+    public ReadExcelUtils(InputStream is , boolean xlsx) {
+        if(is==null){
+            return;
+        }
+        this.is = is;
+        try {
+            if(!xlsx){
+                wb = new HSSFWorkbook(is);
+            }else if(xlsx){
                 wb = new XSSFWorkbook(is);
             }else{
                 wb=null;
@@ -57,11 +94,26 @@ public class ReadExcelUtils {
      * @author zengwendong
      */
     public String[] readExcelTitle() throws Exception{
+
+        return readExcelTitle(0, 0);
+    }
+
+    public int getSheetIndex(String name) throws Exception {
+        for(int i = 0 ; i< 17 ; i++) {
+            if(name.equals(wb.getSheetName(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public String[] readExcelTitle(int sheetIdx, int titleRowIdx) throws Exception{
         if(wb==null){
             throw new Exception("Workbook object is null");
         }
-        sheet = wb.getSheetAt(0);
-        row = sheet.getRow(0);
+        sheet = wb.getSheetAt(sheetIdx);
+        row = sheet.getRow(titleRowIdx);
         // 标题总列数
         int colNum = row.getPhysicalNumberOfCells();
         System.out.println("colNum:" + colNum);
@@ -73,25 +125,31 @@ public class ReadExcelUtils {
         return title;
     }
 
-    /**
-     * 读取Excel数据内容
-     *
-     * @return Map 包含单元格数据内容的Map对象
-     * @author zengwendong
-     */
-    public Map<Integer, Map<Integer,Object>> readExcelContent() throws Exception{
+    public Map<Integer, Map<Integer,Object>> readExcelContent() throws Exception {
+
+        return readExcelContent(0, 1);
+
+    }
+
+        /**
+         * 读取Excel数据内容
+         *
+         * @return Map 包含单元格数据内容的Map对象
+         * @author zengwendong
+         */
+    public Map<Integer, Map<Integer,Object>> readExcelContent(int sheetIdx, int contentRowIdx) throws Exception{
         if(wb==null){
             throw new Exception("Workbook object is null");
         }
         Map<Integer, Map<Integer,Object>> content = new HashMap<Integer, Map<Integer,Object>>();
 
-        sheet = wb.getSheetAt(0);
+        sheet = wb.getSheetAt(sheetIdx);
         // 得到总行数
         int rowNum = sheet.getLastRowNum();
         row = sheet.getRow(0);
         int colNum = row.getPhysicalNumberOfCells();
         // 正文内容应该从第二行开始,第一行为表头的标题
-        for (int i = 1; i <= rowNum; i++) {
+        for (int i = contentRowIdx; i <= rowNum; i++) {
             row = sheet.getRow(i);
             int j = 0;
             Map<Integer,Object> cellValue = new HashMap<Integer, Object>();
@@ -146,6 +204,16 @@ public class ReadExcelUtils {
             cellvalue = "";
         }
         return cellvalue;
+    }
+
+    public void close () {
+        if(this.is != null) {
+            try {
+                this.is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

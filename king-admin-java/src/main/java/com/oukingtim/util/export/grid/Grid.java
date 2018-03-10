@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Grid {
 
+    private String title;
     private List<Column> columns;
     private List<Row> rows;
 
@@ -26,7 +27,11 @@ public class Grid {
     }
 
 
+    public String getTitle() {
+        return title;
+    }
 
-
-
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

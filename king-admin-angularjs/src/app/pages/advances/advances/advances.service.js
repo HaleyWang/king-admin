@@ -1,19 +1,21 @@
 (function() {
     'use strict';
 
-    angular.module('KingAdmin.pages.order.order')
-        .factory('OrderService', OrderService);
+    angular.module('KingAdmin.pages.advances.advances')
+        .factory('AdvancesService', AdvancesService);
 
     /** @ngInject */
-    function OrderService($resource, toastr, CommonService) {
+    function AdvancesService($resource, toastr, CommonService) {
 
-        var rest = $resource('api/order_item/:id', {}, {
+        var apiPath = 'api/advances';
+
+        var rest = $resource(apiPath + '/:id', {}, {
             'create': { method: 'POST' },
             'update': { method: 'PUT' },
         });
 
         function getSmartData(param, callback) {
-            $resource('api/order_item/getSmartData', {}, {
+            $resource(apiPath + '/getSmartData', {}, {
                 'query': { method: 'POST' }
             }).query(param,
                 function(data) {
@@ -80,7 +82,7 @@
         }
 
         function getList(param, callback) {
-            $resource('api/order_item/getlist').get(param,
+            $resource(apiPath + '/getlist').get(param,
                 function(data) {
                     console.log(data);
                     callback(data);

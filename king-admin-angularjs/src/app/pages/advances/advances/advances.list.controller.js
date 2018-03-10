@@ -1,13 +1,16 @@
 (function() {
     'use strict';
 
-    angular.module('KingAdmin.pages.order.order')
-        .controller('OrderListCtrl', OrderListCtrl);
+    angular.module('KingAdmin.pages.advances.advances')
+        .controller('AdvancesListCtrl', AdvancesListCtrl);
 
     /** @ngInject */
-    function OrderListCtrl($scope, Upload, $timeout, toastr, OrderService, $filter, NameTypeObjService, CustomerService) {
+    function AdvancesListCtrl($scope, Upload, $timeout, toastr, AdvancesService, $filter, NameTypeObjService, CustomerService) {
         var kt = this;
         kt.dictlist = [];
+
+        var service = AdvancesService;
+
 
 
         $scope.uploadFiles = function(file, errFiles) {
@@ -15,7 +18,7 @@
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
                 file.upload = Upload.upload({
-                    url: '/api/order_item/import',
+                    url: '/api/advances/import',
                     data: { file: file }
                 });
 
@@ -49,7 +52,7 @@
                 return;
             }
             console.log("--orderitem", dict);
-            OrderService.save(dict, function(data) {
+            service.save(dict, function(data) {
                 kt.LoadPage();
             });
         }
@@ -74,7 +77,7 @@
             tableState = tableState || kt.tableState;
             tableState.pagination.number = tableState.pagination.number || 5;
             tableState.search = {}; //todo search all
-            OrderService.getSmartData(tableState,
+            service.getSmartData(tableState,
                 function(data) {
                     tableState.pagination.numberOfPages = data.result.pages;
                     tableState.pagination.totalItemCount = data.result.total;
@@ -125,7 +128,7 @@
                 kt.LoadPage();
                 return;
             }
-            OrderService.del({ id: id },
+            service.del({ id: id },
                 function(data) {
                     kt.LoadPage();
                 })

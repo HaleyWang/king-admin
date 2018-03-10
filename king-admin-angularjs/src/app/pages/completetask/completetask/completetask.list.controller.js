@@ -1,13 +1,15 @@
 (function() {
     'use strict';
 
-    angular.module('KingAdmin.pages.order.order')
-        .controller('OrderListCtrl', OrderListCtrl);
+    angular.module('KingAdmin.pages.completetask.completetask')
+        .controller('CompleteTaskListCtrl', CompleteTaskListCtrl);
 
     /** @ngInject */
-    function OrderListCtrl($scope, Upload, $timeout, toastr, OrderService, $filter, NameTypeObjService, CustomerService) {
+    function CompleteTaskListCtrl($scope, Upload, $timeout, toastr, CompleteTaskService, $filter, NameTypeObjService, CustomerService) {
         var kt = this;
         kt.dictlist = [];
+
+        var service = CompleteTaskService;
 
 
         $scope.uploadFiles = function(file, errFiles) {
@@ -49,7 +51,7 @@
                 return;
             }
             console.log("--orderitem", dict);
-            OrderService.save(dict, function(data) {
+            service.save(dict, function(data) {
                 kt.LoadPage();
             });
         }
@@ -74,7 +76,7 @@
             tableState = tableState || kt.tableState;
             tableState.pagination.number = tableState.pagination.number || 5;
             tableState.search = {}; //todo search all
-            OrderService.getSmartData(tableState,
+            service.getSmartData(tableState,
                 function(data) {
                     tableState.pagination.numberOfPages = data.result.pages;
                     tableState.pagination.totalItemCount = data.result.total;
@@ -125,7 +127,7 @@
                 kt.LoadPage();
                 return;
             }
-            OrderService.del({ id: id },
+            service.del({ id: id },
                 function(data) {
                     kt.LoadPage();
                 })

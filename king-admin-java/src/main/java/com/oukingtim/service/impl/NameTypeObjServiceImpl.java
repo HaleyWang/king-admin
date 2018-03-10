@@ -32,12 +32,18 @@ public class NameTypeObjServiceImpl extends ServiceImpl<NameTypeObjMapper, NameT
 
     @Override
     public List<NameTypeObj> findByCode(String code) {
-        List<NameType> nameTypes = nameTypeService.selectList(new EntityWrapper<>(new NameType().withCode(code)));
-        if(CollectionUtils.isEmpty(nameTypes)) {
-            return new ArrayList<>();
-        }
-        String nameTypeId = nameTypes.get(0).getId();
+        String nameTypeId = findNameTypeIdByCode(code);
         List<NameTypeObj> NameTypeObjs = selectList(new EntityWrapper<>(new NameTypeObj().widthNameTypeId(nameTypeId)));
         return NameTypeObjs;
+    }
+
+    @Override
+    public String findNameTypeIdByCode(String code) {
+        List<NameType> nameTypes = nameTypeService.selectList(new EntityWrapper<>(new NameType().withCode(code)));
+        if(CollectionUtils.isEmpty(nameTypes)) {
+            return null;
+        }
+        String nameTypeId = nameTypes.get(0).getId();
+        return nameTypeId;
     }
 }

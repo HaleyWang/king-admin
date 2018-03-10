@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface NameTypeObjService extends IService<NameTypeObj> {
     List<NameTypeObj> findByCode(String code);
+    public String findNameTypeIdByCode(String code) ;
+
 }

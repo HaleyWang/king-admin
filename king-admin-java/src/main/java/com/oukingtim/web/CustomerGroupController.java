@@ -2,24 +2,32 @@ package com.oukingtim.web;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.oukingtim.domain.NameTypeObj;
 import com.oukingtim.domain.TbDictClass;
 import com.oukingtim.domain.customer.Customer;
 import com.oukingtim.domain.customer.CustomerGroup;
+import com.oukingtim.domain.customer.Market;
 import com.oukingtim.service.customer.CustomerGroupService;
 import com.oukingtim.service.customer.CustomerService;
+import com.oukingtim.service.customer.MarketService;
 import com.oukingtim.util.excel.FileUtil;
+import com.oukingtim.util.excel.read.ReadExcelUtils;
 import com.oukingtim.util.exception.NormalException;
 import com.oukingtim.web.vm.ResultVM;
 import com.oukingtim.web.vm.SmartPageVM;
 import com.oukingtim.web.vm.SmartPagination;
 import com.oukingtim.web.vm.SmartSort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by haley on 11/01/2018.
@@ -28,6 +36,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/customer-group")
 public class CustomerGroupController extends BaseController<CustomerGroupService, CustomerGroup> {
+
+
 
     /**
      * 获取集合
@@ -69,16 +79,20 @@ public class CustomerGroupController extends BaseController<CustomerGroupService
 
 
 
-    @PostMapping("import")
-    public String importExcel(@RequestParam("file") MultipartFile file) throws NormalException {
-        //解析excel，
-        List<CustomerGroup> personList = FileUtil.importExcel(file,1,1,CustomerGroup.class);
-        //也可以使用MultipartFile,使用 FileUtil.importExcel(MultipartFile file, Integer titleRows, Integer headerRows, Class<T> pojoClass)导入
-        System.out.println("导入数据一共【"+personList.size()+"】行");
 
-        //TODO 保存数据库
 
-        return "ok";
+    @GetMapping("export1")
+    public void export1(HttpServletResponse response,
+                       String head, String sheetName, String fileName) throws NormalException {
+
+
+        CustomerGroup c = new CustomerGroup();
+        c.setName("aa");
+        c.setRemark("hhha");
+        List<CustomerGroup> list = Arrays.asList(c);
+
+        //导出操作
+        FileUtil.exportExcel(list, head, sheetName, CustomerGroup.class, fileName,response);
     }
 
 

@@ -3,7 +3,6 @@ package com.oukingtim.util.export.excel;
 import com.oukingtim.util.export.grid.Column;
 import com.oukingtim.util.export.grid.Grid;
 import com.oukingtim.util.export.grid.Row;
-import org.apache.poi.ss.formula.functions.Columns;
 import org.junit.Test;
 
 import java.io.File;
@@ -11,12 +10,10 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by haley on 04/01/2018.
  */
-public class ExportGridTest {
+public class ExportGrid2Test {
     @Test
     public void export() throws Exception {
 
@@ -33,10 +30,11 @@ public class ExportGridTest {
 
 
         Grid grid = new Grid();
+        grid.setTitle("AA Table");
         grid.setColumns(Arrays.asList(column, column1));
         grid.setRows(Arrays.asList(row, row1));
 
-        File file = new File("./grid.xls");
+        File file = new File("./grid2.xls");
         OutputStream output = new FileOutputStream(file);
 
         ExportGrid eg = new ExportGrid();

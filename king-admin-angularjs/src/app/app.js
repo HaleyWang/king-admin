@@ -15,5 +15,6 @@ angular.module('KingAdmin', [
     'ngJsTree',
     'angular-progress-button-styles',
     'KingAdmin.theme',
-    'KingAdmin.pages'
+    'KingAdmin.pages',
+    'ngFileUpload'
 ]);

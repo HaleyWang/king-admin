@@ -5,7 +5,7 @@
         .controller('CustomerListCtrl', CustomerListCtrl);
 
     /** @ngInject */
-    function CustomerListCtrl($scope, $filter, toastr, CustomerService, MarketService, CustomerGroupService, $uibModal) {
+    function CustomerListCtrl($scope, Upload, $timeout, $filter, toastr, CustomerService, MarketService, CustomerGroupService, $uibModal) {
         var kt = this;
         kt.dictlist = [];
         kt.dictClassList = [];
@@ -25,6 +25,28 @@
         };
 
 
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                file.upload = Upload.upload({
+                    url: '/api/customer/import',
+                    data: { file: file }
+                });
+
+                file.upload.then(function(response) {
+                    $timeout(function() {
+                        file.result = response.data;
+                    });
+                }, function(response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function(evt) {
+                    file.progress = Math.min(100, parseInt(100.0 *
+                        evt.loaded / evt.total));
+                });
+            }
+        }
 
         MarketService.getList({}, function(data) {
             kt.marketList = data.result;

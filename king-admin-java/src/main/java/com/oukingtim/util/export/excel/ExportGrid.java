@@ -69,6 +69,13 @@ public class ExportGrid extends AbstractReport {
         withTableHeader(tableHeader);
 
         List reportHeads = new ArrayList();
+        if(grid.getTitle() != null) {
+            ReportHeader reportHeader = new ReportHeader();
+            reportHeader.setName(grid.getTitle());
+            reportHeader.setDisplayName(grid.getTitle());
+            reportHeader.setLength(grid.getColumns().size());
+            reportHeads.add(reportHeader);
+        }
 
         this.export(reportHeads, grid.getRows(), output);
     }

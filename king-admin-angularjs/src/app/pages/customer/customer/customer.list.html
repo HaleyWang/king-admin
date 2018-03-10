@@ -18,6 +18,11 @@
                     </button>
 
 
+            <button has-perms='dict.dictclass.add' class="btn btn-success btn-with-icon" type="file" ngf-select="uploadFiles($file, $invalidFiles)" ngf-max-height="1000" ngf-max-size="1MB">
+                            <i class="ion-file"></i>导入
+                        </button>
+
+
         </div>
         <div class="col-md-2 col-md-offset-6">
             <div class="form-group">
@@ -38,7 +43,7 @@
                 <th st-sort="customerCode">客户代号</th>
                 <th st-sort="customerNum">客户编码</th>
                 <th st-sort="name">名称</th>
-                <th st-sort="marketId">市场</th>
+                <th ng-show="false" st-sort="marketId">市场</th>
                 <th st-sort="marketId">市场简写</th>
                 <th st-sort="phone">电话1</th>
                 <th st-sort="phone1">电话2</th>
