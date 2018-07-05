@@ -2,19 +2,19 @@
  * @author v.lugovsky
  * created on 16.12.2015
  */
-(function () {
+(function() {
     'use strict';
 
-    angular.module('KingAdmin.pages.home', [])
+    angular.module('KingAdmin.pages.print', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('home', {
-                url: '/home',
-                templateUrl: 'app/pages/home/home.html',
-                controller: 'HomeControlller',
+            .state('print', {
+                url: '/print',
+                templateUrl: 'app/pages/print/print.html',
+                controller: 'PrintControlller',
                 controllerAs: 'kt',
                 title: '首页',
                 sidebarMeta: {

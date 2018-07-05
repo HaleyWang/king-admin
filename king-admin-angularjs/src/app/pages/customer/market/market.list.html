@@ -14,7 +14,7 @@
     <table class="table table-bordered table-hover table-condensed" st-pipe="kt.LoadPage" st-table="dictlist">
         <thead>
             <tr class="sortable">
-                <th>
+                <th ng-show="false">
                     <label class="table-checkbox checkbox-inline custom-checkbox nowrap">
                     <input type="checkbox" ng-model="kt.checkboxes.checked">
                     <span></span>
@@ -31,7 +31,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="dict in kt.dictlist" class="editable-row">
-                <td class="check-td">
+                <td ng-show="false" class="check-td">
                     <div class="mail-checkbox">
                         <label class="checkbox-inline custom-checkbox nowrap">
                         <input type="checkbox" ng-model="kt.checkboxes.items[dict.id]">
