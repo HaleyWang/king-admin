@@ -1,26 +1,26 @@
 package com.oukingtim.web;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.oukingtim.domain.NameType;
-import com.oukingtim.domain.TbDict;
 import com.oukingtim.domain.customer.Customer;
 import com.oukingtim.domain.customer.Market;
-import com.oukingtim.service.TbDictService;
 import com.oukingtim.service.customer.CustomerService;
 import com.oukingtim.service.customer.MarketService;
 import com.oukingtim.util.excel.read.ReadExcelUtils;
+import com.oukingtim.util.export.ExportUtils;
+import com.oukingtim.util.export.grid.Column;
+import com.oukingtim.util.export.grid.Settings;
 import com.oukingtim.web.vm.ResultVM;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.Columns;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.oukingtim.util.export.grid.Column.colS;
 
 /**
  * Created by haley on 11/01/2018.
@@ -33,7 +33,8 @@ public class CustomerController extends BaseController<CustomerService, Customer
     @Autowired
     MarketService marketService;
 
-
+    @Autowired
+    private MessageSource messageSource;
 
     @PostMapping("import")
     public ResultVM importExcel(@RequestParam("file") MultipartFile file) throws Exception {
@@ -118,6 +119,24 @@ public class CustomerController extends BaseController<CustomerService, Customer
         return ResultVM.ok("ok");
     }
 
+
+    @Override
+    protected List<Column> getColumns() {
+        System.out.println(messageSource.getMessage("welcome", null, LocaleContextHolder.getLocale()));
+
+
+        List<Column> ss = ExportUtils.colsData(Customer.class, messageSource, LocaleContextHolder.getLocale());
+
+
+
+        return ss;
+    }
+
+    @Override
+    protected Settings getSettings() {
+        return new Settings().ofActionCol("customerCode");
+    }
+
     /**
      * 获取集合
      * @return
@@ -128,3 +147,5 @@ public class CustomerController extends BaseController<CustomerService, Customer
         return ResultVM.ok(list);
     }
 }
+
+

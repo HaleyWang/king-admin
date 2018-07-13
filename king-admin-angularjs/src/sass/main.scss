@@ -1,4 +1,87 @@
 @import 'common';
-
 // injector
 // endinjector
+//custom
+.inline-block {
+    display: inline-block;
+}
+
+.al-footer {
+    display: none;
+}
+
+.select-sm {
+    height: 30px;
+}
+
+.panel-blur {
+    background: url("../assets/img/blur-bg-blurred.jpg");
+    transition: none;
+    background-attachment: fixed;
+    .select-page {
+        height: 26px;
+        width: 68px;
+    }
+    .panel {
+        background: transparent;
+        box-shadow: none;
+    }
+    .select-sm {
+        width: 50px;
+    }
+    .footer-blur {
+        padding: 5px 8px;
+    }
+}
+
+.kt-panel {
+    tr {
+        .ion-settings {
+            display: inline-block;
+            width: 40px;
+            width: 26px;
+            text-align: center;
+            color: #eee;
+        }
+        &:hover {
+            .ion-settings {
+                color: #e85656;
+            }
+        }
+    }
+    .btn-sm {
+        input {
+            height: 26px;
+        }
+    }
+    .kt-head-btns {
+        padding-bottom: 10px;
+    }
+    .kt-head-box {
+        padding: 0px 22px;
+        input {
+            max-width: 120px;
+        }
+        .panel-title {
+            line-height: 40px;
+        }
+        .kt-head-btns {
+            text-align: right;
+        }
+    }
+    .footer-blur {
+        padding: 8px;
+        background: url("../assets/img/blur-bg-blurred.jpg");
+        transition: none;
+        background-attachment: fixed;
+        padding: 5px 8px;
+    }
+    .panel-footer {
+        .selectpicker {
+            min-width: 40px;
+        }
+    }
+    .btn-list {
+        float: right;
+    }
+}

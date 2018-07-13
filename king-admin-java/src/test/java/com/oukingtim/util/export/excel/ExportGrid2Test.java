@@ -1,9 +1,14 @@
 package com.oukingtim.util.export.excel;
 
+import com.oukingtim.domain.customer.Customer;
+import com.oukingtim.util.export.ExportUtils;
 import com.oukingtim.util.export.grid.Column;
 import com.oukingtim.util.export.grid.Grid;
 import com.oukingtim.util.export.grid.Row;
+import com.oukingtim.util.export.grid.Settings;
+import org.apache.el.util.ReflectionUtil;
 import org.junit.Test;
+import org.springframework.util.ReflectionUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,8 +19,13 @@ import java.util.Arrays;
  * Created by haley on 04/01/2018.
  */
 public class ExportGrid2Test {
+
     @Test
     public void export() throws Exception {
+
+        //ReflectionUtils.get
+
+
 
         Column column = new Column("name", "Name");
         Column column1 = new Column("age", "Age");
@@ -30,11 +40,12 @@ public class ExportGrid2Test {
 
 
         Grid grid = new Grid();
-        grid.setTitle("AA Table");
+        grid.setSettings(new Settings("gridfile.xls", "AA Table"));
         grid.setColumns(Arrays.asList(column, column1));
         grid.setRows(Arrays.asList(row, row1));
 
-        File file = new File("./grid2.xls");
+        File file = new File(grid.getSettings().getFileName());
+        System.out.println(file.getAbsoluteFile());
         OutputStream output = new FileOutputStream(file);
 
         ExportGrid eg = new ExportGrid();

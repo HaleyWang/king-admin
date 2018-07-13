@@ -250,6 +250,25 @@ CREATE TABLE `tb_name_type_obj` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tb_name_type_obj';
 
+/*tb_complete_task*/
+
+
+CREATE TABLE `tb_complete_task` (
+  `id` varchar(32) NOT NULL,
+    `customer_id` varchar(32) NOT NULL,
+    `complete_num` varchar(32) NOT NULL,
+    `complete_date` datetime DEFAULT NULL,
+
+  `remark` varchar(255) DEFAULT NULL,
+  `create_user_id` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_user_id` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='tb_complete_task';
+
+
+
 
 
 

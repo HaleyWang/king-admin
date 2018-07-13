@@ -5,11 +5,15 @@
         .controller('CustomerListCtrl', CustomerListCtrl);
 
     /** @ngInject */
-    function CustomerListCtrl($scope, Upload, $timeout, $filter, toastr, CustomerService, MarketService, CustomerGroupService, $uibModal) {
+    function CustomerListCtrl($scope, Upload, $timeout, $filter, toastr, CustomerService, MarketService, CommonService, CustomerGroupService, $uibModal, $rootScope) {
         var kt = this;
-        kt.dictlist = [];
+        kt.rows = [];
         kt.dictClassList = [];
         kt.marketList = [];
+        kt.customersResp = {};
+
+
+
 
         $scope.open = function(page, size) {
             $uibModal.open({
@@ -73,7 +77,7 @@
             if (customerGroupId) {
                 selected = $filter('filter')(kt.marketList, { id: customerGroupId });
             }
-            return selected.length ? selected[0].name : '请选择分类';
+            return selected.length ? selected[0].name : '';
         };
 
 
@@ -96,17 +100,50 @@
             CustomerService.save(dict, function(data) {
                 kt.LoadPage();
             });
-        }
+        };
+
+        kt.fillData = function(list) {
+            if (!list) {
+                return;
+            }
+            var showMarketCode = kt.showMarketCode;
+            for (var i = 0, n = list.length; i < n; i++) {
+                var item = list[i];
+                item.marketCode = showMarketCode(item.marketId);
+            }
+        };
 
         kt.LoadPage = function(tableState) {
+
+            console.log('lll');
+
             tableState = tableState || kt.tableState;
+
             tableState.pagination.number = tableState.pagination.number || 5;
             CustomerService.getSmartData(tableState,
                 function(data) {
                     tableState.pagination.numberOfPages = data.result.pages;
                     tableState.pagination.totalItemCount = data.result.total;
                     kt.tableState = tableState;
-                    kt.dictlist = data.result.records;
+
+
+                    var records = data.result.records;
+                    kt.fillData(records);
+                    kt.rows = records;
+                    kt.customersResp = data;
+                });
+        };
+
+        kt.exportExcel = function() {
+
+            var data = kt.customersResp.grid;
+            data.rows = kt.rows;
+
+            CommonService.exportFile(
+                'api/customer/export_excel',
+                data,
+                function(res) {
+
                 });
         };
 

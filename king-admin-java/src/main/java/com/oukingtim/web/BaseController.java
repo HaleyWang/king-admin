@@ -9,19 +9,24 @@ import com.oukingtim.util.ShiroUtils;
 import com.oukingtim.util.StringTools;
 import com.oukingtim.util.excel.FileUtil;
 import com.oukingtim.util.exception.NormalException;
-import com.oukingtim.web.vm.ResultVM;
-import com.oukingtim.web.vm.SmartPageVM;
-import com.oukingtim.web.vm.SmartPagination;
-import com.oukingtim.web.vm.SmartSort;
+import com.oukingtim.util.export.excel.ExportGrid;
+import com.oukingtim.util.export.grid.Column;
+import com.oukingtim.util.export.grid.Grid;
+import com.oukingtim.util.export.grid.Settings;
+import com.oukingtim.web.vm.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 通用Controller（增删改查）
@@ -31,6 +36,16 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
 
     @Autowired
     protected S service;
+
+    @PostMapping("export_excel")
+    public void exportExcel(HttpServletRequest request, HttpServletResponse response, @RequestBody Grid grid) throws IOException {
+
+
+        new ExportGrid().export(grid, request, response);
+
+        //导出操作
+        //FileUtil.exportExcel(data, head, sheetName, fileName, response);
+    }
 
     @GetMapping("export")
     public void export(HttpServletResponse response, SmartPageVM<T> spage,
@@ -98,7 +113,15 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
                 }
             }
         }
-        return  ResultVM.ok(service.selectPage(page,wrapper));
+        return  ResultVM.ok(service.selectPage(page, wrapper)).of(getColumns(), getSettings());
+    }
+
+    protected List<Column> getColumns() {
+        return new ArrayList<>();
+    }
+
+    protected Settings getSettings() {
+        return new Settings();
     }
 
     /**

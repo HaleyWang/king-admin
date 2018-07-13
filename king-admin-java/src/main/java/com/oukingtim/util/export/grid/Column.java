@@ -1,10 +1,15 @@
 package com.oukingtim.util.export.grid;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class Column {
+    public static final int DEFAULT_WIDTH = 90;
     private String id;
     private String name;
+    private int width = DEFAULT_WIDTH;
     private String startDate;
     private String endDate;
     private DataType dataType = DataType.string;
@@ -12,63 +17,38 @@ public class Column {
    
      public Column() {}
    
-    public Column(String id, String name, DataType dataType){
-        this(id, name);
+    public Column(String id, String name, int width, DataType dataType){
+        this.id = id;
+        this.name = name;
+        this.width = width;
         this.dataType = dataType;
+    }
+    public Column(String id, String name, int width){
+        this(id, name, width, DataType.string);
     }
     public Column(String id, String name){
-        this.id = id;
-        this.name = name;
-    }
-    public String getId() {
-        return id;
+        this(id, name, DEFAULT_WIDTH, DataType.string);
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public static Column colS(String id, String name) {
+        return new Column(id, name);
     }
 
-    public String getName() {
-        return name;
+    public static Column col(String id, String name, DataType dataType, int width) {
+        return new Column(id, name, width, dataType);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static Column colS(String id, String name, int width) {
+        return new Column(id, name, width);
     }
 
-    public List<Column> getSubs() {
-        return subs;
+    public static Column colN(String id, String name) {
+        return new Column(id, name);
     }
 
-    public void setSubs(List<Column> subs) {
-        this.subs = subs;
+    public static Column colD(String id, String name) {
+        return new Column(id, name);
     }
 
-    public DataType getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
-    }
-    public void setDataType(String dataType) {
-        this.dataType = DataType.valueOfDefault(dataType);
-    }
-
-	public String getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
 
 }

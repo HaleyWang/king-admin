@@ -9,11 +9,16 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  messages:
+    encoding: UTF-8
+    basename: messages
+
 
 management:
   security:
     enabled: false #关掉安全认证
   context-path: /management #actuator的访问路径　
+
 
 
 druid:
