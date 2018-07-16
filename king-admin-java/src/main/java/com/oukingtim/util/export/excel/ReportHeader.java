@@ -1,8 +1,11 @@
 package com.oukingtim.util.export.excel;
 
+import lombok.Data;
+
 /**
  * Created by haley on 03/01/2018.
  */
+@Data
 public class ReportHeader {
 
     String name;
@@ -19,27 +22,5 @@ public class ReportHeader {
         this.length = length;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
 }

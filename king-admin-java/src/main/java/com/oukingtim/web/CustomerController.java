@@ -33,9 +33,6 @@ public class CustomerController extends BaseController<CustomerService, Customer
     @Autowired
     MarketService marketService;
 
-    @Autowired
-    private MessageSource messageSource;
-
     @PostMapping("import")
     public ResultVM importExcel(@RequestParam("file") MultipartFile file) throws Exception {
         //解析excel，
@@ -120,22 +117,6 @@ public class CustomerController extends BaseController<CustomerService, Customer
     }
 
 
-    @Override
-    protected List<Column> getColumns() {
-        System.out.println(messageSource.getMessage("welcome", null, LocaleContextHolder.getLocale()));
-
-
-        List<Column> ss = ExportUtils.colsData(Customer.class, messageSource, LocaleContextHolder.getLocale());
-
-
-
-        return ss;
-    }
-
-    @Override
-    protected Settings getSettings() {
-        return new Settings().ofActionCol("customerCode");
-    }
 
     /**
      * 获取集合

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import com.oukingtim.util.export.grid.Column;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -86,7 +87,7 @@ public abstract class AbstractReport implements IReport {
 	 * @return HSSFSheet
 	 */
 	protected   HSSFSheet exportHeader(HSSFWorkbook workBook, List reportHeads){
-		String[] tableHeader=getTableHeader();
+		Column[] tableHeader=getTableHeader();
 		short cellNumber=getCellNumber();
 		int colSize = reportHeads.size();
 		// 新建Excel表单
@@ -98,7 +99,6 @@ public abstract class AbstractReport implements IReport {
             for(int j=0;j<cellNumber;j++){
             	cell = row.createCell((short)j);
     			cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-    			//cell.setEncoding(HSSFCell.ENCODING_UTF_16);
     			cell.setCellStyle(SheetStyle.getIndagateHeaderStyle(workBook));
             }
 
@@ -116,8 +116,14 @@ public abstract class AbstractReport implements IReport {
             HSSFCell headerCell = row.createCell((short) k);
             headerCell.setCellType(HSSFCell.CELL_TYPE_STRING);
             //headerCell.setEncoding(HSSFCell.ENCODING_UTF_16);
-            headerCell.setCellValue(tableHeader[k]);               
-        }  
+			Column col = tableHeader[k];
+			headerCell.setCellValue(col.getName());
+			headerCell.setCellValue(col.getName());
+
+			//table column width
+			sheet.setColumnWidth(k, col.getWidth()* 32);
+
+		}
 		return sheet;
 	}
 
@@ -194,7 +200,7 @@ public abstract class AbstractReport implements IReport {
 	 * 返回tableHeader
 	 * <p>@return</p>
 	 */
-	protected abstract String[] getTableHeader();
+	protected abstract Column[] getTableHeader();
 	
 	/**
 	 * 返回cellNumber
@@ -230,6 +236,7 @@ public abstract class AbstractReport implements IReport {
 	        	
 	        	cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 	        	//cell.setEncoding(HSSFCell.ENCODING_UTF_16);
+				//sheet.setColumnWidth(j, 25);
 	        	try {
 					cell.setCellValue(BeanUtils.getProperty(obj, cells[j]));
 				} catch (Exception e) {

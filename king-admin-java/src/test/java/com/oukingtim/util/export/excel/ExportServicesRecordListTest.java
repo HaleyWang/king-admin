@@ -1,10 +1,12 @@
 package com.oukingtim.util.export.excel;
 
+import com.oukingtim.util.export.grid.Column;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,8 +24,15 @@ public class ExportServicesRecordListTest {
         String[] cellsFeildNames = new String[]{"serviceName"};
 
 
+        Column c = new Column();
+        List<Column> list = new ArrayList<>();
+        for(String s : tableHeader) {
+            list.add(new Column(s, s));
+        }
+
+
         ExportServicesRecordList e = new ExportServicesRecordList();
-        e.withTableHeader(tableHeader).withCellsFeildNames(cellsFeildNames);
+        e.withTableHeader(list.toArray(new Column[]{})).withCellsFeildNames(cellsFeildNames);
 
         List reportHeads = Arrays.asList(new ReportHeader("11", "12", 11111));
 

@@ -4,6 +4,8 @@ import com.google.common.base.CaseFormat;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +17,10 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
     public static String getClassName(Class<?> clazz) {
         return clazz.getName();
+    }
+
+    public static Type[] getSuperclassActualTypeArguments(Class clazz) {
+        return ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
     }
 
     public static String getClsName(Class<?> clazz) {

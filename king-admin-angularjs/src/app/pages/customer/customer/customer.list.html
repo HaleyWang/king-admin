@@ -1,4 +1,4 @@
-<div st-pipe="kt.LoadPage" st-table="dictlist" class="panel-blur">
+<div st-pipe="kt.LoadPage" st-table="rows" class="panel-blur kt-panel-out">
     <div class="panel  xmedium-panel with-scroll light-text animated zoomIn kt-panel clearfix ">
 
         <div class="panel-heading kt-head-box ">
@@ -6,14 +6,8 @@
 
             <div class="row add-row-editable-table  ">
 
-
-
-
                 <div class="col-xs-5">
                     <span class="panel-title">客户列表</span>
-
-
-
 
                 </div>
 
@@ -23,14 +17,14 @@
 
                     <ul class="btn-list clearfix ng-scope">
 
-                        <li class="visible-md">
+                        <li class="visible-md visible-lg">
                             <button has-perms='sys.menu.add' ng-show="!kt.isShowAddBtn" class="btn btn-success btn-sm btn-with-icon" ui-sref="customer.customer.add({id:kt.customer.id,isAdd:true})">
                                             <i class="ion-plus-round"></i>新增
                                         </button>
 
                         </li>
 
-                        <li class="visible-md">
+                        <li class="visible-md visible-lg">
 
                             <button has-perms='dict.dictclass.add' class="btn btn-success btn-sm btn-with-icon" type="file" ngf-select="uploadFiles($file, $invalidFiles)" ngf-max-height="1000" ngf-max-size="1MB">
                             <i class="ion-file"></i>导入
@@ -47,19 +41,19 @@
 
                                     <li>
                                         <span>
-                                                                    <input type="text" class="form-control form-control-rounded input-sm " ng-model="kt.tableState.search.text" input-keyup="kt.LoadPage" placeholder="名称">
+                                                                    <input type="text" class="form-control form-control-rounded input-sm " ng-model="kt.tableState.search.name" input-keyup="kt.LoadPage" placeholder="名称">
                                                                     </span>
                                     </li>
                                     <li role="separator" class="divider"></li>
 
-                                    <li>
+                                    <li class="hidden-md hidden-lg">
                                         <a href="javascript:void(0);" has-perms='sys.menu.add' ng-show="!kt.isShowAddBtn" ui-sref="customer.customer.add({id:kt.customer.id,isAdd:true})">
                                             <i class="ion-plus-round"></i>新增
 
                                         </a>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li>
+                                    <li class="hidden-md hidden-lg">
                                         <a href="javascript:void(0);" has-perms='dict.dictclass.add' type="file" ngf-select="uploadFiles($file, $invalidFiles)" ngf-max-height="1000" ngf-max-size="1MB">
                                             <i class="ion-file"></i>导入
                                         </a>
@@ -69,18 +63,20 @@
                                             <i class="ion-file"></i>导出
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a href="javascript:void(0);" ng-click="kt.openDateFilter()" has-perms='dict.dictclass.view'>
+                                            <i class="ion-file"></i>日期
+                                        </a>
+
+
+                                    </li>
                                 </ul>
                             </div>
 
                         </li>
 
                     </ul>
-
-
-
-
-
-
 
 
                 </div>
@@ -90,8 +86,6 @@
 
 
         <div class="panel-body">
-
-
 
 
             <table style="table-layout: fixed" class="table1 table-bordered table-hover table-condensed">
@@ -172,6 +166,10 @@
 
 
             </table>
+
+
+
+
         </div>
 
 
@@ -181,9 +179,14 @@
     <div class=" footer-blur ">
 
 
-        <td colspan="12" class="text-center">
-            <div st-pagination="" st-items-by-page="5" st-size-op="5" st-template="app/pages/common/pagination-sm.html"></div>
-        </td>
+
+        <div class="row">
+            <div class="col-xs-1 col-md-1 col-sm-1 ">
+                <select class="form-control selectpicker show-tick select-sm " ng-model="kt.pageSize" ng-options="i for i in [5,10,20,100,1000]">
+                    </select>
+            </div>
+            <div st-pagination="" st-items-by-page="kt.pageSize" st-template="app/pages/common/pagination-sm.html"></div>
+        </div>
 
 
     </div>

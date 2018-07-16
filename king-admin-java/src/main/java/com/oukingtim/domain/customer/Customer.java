@@ -1,6 +1,7 @@
 package com.oukingtim.domain.customer;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oukingtim.domain.BaseModel;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class Customer extends BaseModel<com.oukingtim.domain.customer.Customer> 
     private String name;
 
     private String marketId;
+
+    @TableField(exist=false)
+    private String marketShortName;
 
     private String phone;
 

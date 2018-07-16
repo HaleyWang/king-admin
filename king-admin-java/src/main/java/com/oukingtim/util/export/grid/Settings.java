@@ -10,13 +10,13 @@ import java.util.List;
  */
 @Data
 public class Settings {
-    private String fileName;
     private String actionCol;
+    private String excelName;
     private List<String> titles;
 
     public Settings() {}
-    public Settings(String fileName, String ... title) {
-        this.fileName = fileName;
+    public Settings(String excelName, String ... title) {
+        this.excelName = excelName;
         this.titles = Arrays.asList(title);
     }
 
@@ -24,5 +24,11 @@ public class Settings {
     public Settings ofActionCol(String actionCol) {
         this.actionCol = actionCol;
         return this;
+    }
+
+    public Settings ofExcelName(String excelName) {
+        this.excelName = excelName;
+        return this;
+
     }
 }

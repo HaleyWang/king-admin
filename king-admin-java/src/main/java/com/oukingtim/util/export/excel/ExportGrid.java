@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class ExportGrid extends AbstractReport {
 
 //	表头   
-    private String[] tableHeader = {};
+    private Column[] tableHeader = {};
 
 	Grid grid;
     
@@ -54,18 +54,18 @@ public class ExportGrid extends AbstractReport {
     /* (non-Javadoc)
      * @see com.foresee.export.AbstractReport#getTableHeader()
      */
-	protected String[] getTableHeader() {
+	protected Column[] getTableHeader() {
 		return tableHeader;
 	}
 
-    private void withTableHeader(String[] tableHeader) {
+    private void withTableHeader(Column[] tableHeader) {
         this.tableHeader = tableHeader;
     }
 
 
     public void export(Grid grid,HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String filename = Optional.ofNullable(grid.getSettings()).map(Settings::getFileName).orElse(DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date()));//设置下载时客户端Excel的名称
+        String filename = Optional.ofNullable(grid.getSettings()).map(Settings::getExcelName).orElse(DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date())+".xlsx");//设置下载时客户端Excel的名称
 
         filename = encodeFilename(filename, request);//处理中文文件名
         response.setContentType("application/vnd.ms-excel");
@@ -113,9 +113,8 @@ public class ExportGrid extends AbstractReport {
         // TODO group,LV BVVVVVVVVBC       Q
         this.grid = grid;
 
-        List<String> tableHeaderList = grid.getColumns().stream().map(Column::getName).collect(Collectors.toList());
 
-        String[] tableHeader = tableHeaderList.toArray(new String[]{});
+        Column[] tableHeader = grid.getColumns().toArray(new Column[]{});
 
         withTableHeader(tableHeader);
 

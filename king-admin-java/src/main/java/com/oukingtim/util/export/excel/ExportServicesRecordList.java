@@ -1,6 +1,8 @@
 package com.oukingtim.util.export.excel;
 
 
+import com.oukingtim.util.export.grid.Column;
+
 /**
  * <p></p>
  *
@@ -11,7 +13,7 @@ package com.oukingtim.util.export.excel;
 public class ExportServicesRecordList extends AbstractReport {
 
 //	表头   
-    private String[] tableHeader = {};
+    private Column[] tableHeader = {};
 
     String[] cellsFeildNames = {};
     
@@ -32,11 +34,11 @@ public class ExportServicesRecordList extends AbstractReport {
 	/* (non-Javadoc)
 	 * @see com.foresee.export.AbstractReport#getTableHeader()
 	 */
-	protected String[] getTableHeader() {
+	protected Column[] getTableHeader() {
 		return tableHeader;
 	}
 
-    public ExportServicesRecordList withTableHeader(String[] tableHeader) {
+    public ExportServicesRecordList withTableHeader(Column[] tableHeader) {
         this.tableHeader = tableHeader;
 
         return this;

@@ -22,6 +22,26 @@
             });
         };
 
+        function showDateFilter(dateFilterOptions, callbackFunc) {
+
+            var size = 'sm';
+            var page = 'app/pages/common/date_picker.html';
+            $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                controller: 'KtDatePickerCtrl',
+                size: size || 'sm',
+                resolve: {
+                    dateFilterOptions: function() {
+                        return dateFilterOptions;
+                    }
+                }
+            }).result.then(function(opParams) {
+                return callbackFunc(opParams);
+            });
+        };
+
+
         function common(items, callbackFunc, page) {
             show(page, 'sm', 'CommomCtrl', items, callbackFunc)
         }
@@ -56,24 +76,17 @@
                 responseType: 'arraybuffer'
             }).success(function(data, status, headers, config) {
 
-                    //$resource('api/customer/export_excel', { "a": 1 }, {
-                    //    'query': { method: 'POST' }
-                    //}).query(params,
-                    //    function(data, status, headers, config) {
                     console.log(status, headers, config);
-
 
                     var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
                     var objectUrl = URL.createObjectURL(blob);
                     //window.open(objectUrl);
 
-
-
                     var a = document.createElement('a');
                     document.body.appendChild(a);
                     a.setAttribute('style', 'display:none');
                     a.setAttribute('href', objectUrl);
-                    var filename = "记录.xls";
+                    var filename = params.settings.excelName;
                     a.setAttribute('download', filename);
                     a.click();
                     URL.revokeObjectURL(objectUrl);
@@ -87,6 +100,7 @@
 
         return {
             exportFile: exportFile,
+            showDateFilter: showDateFilter,
             show: show,
             info: info,
             success: success,

@@ -14,7 +14,7 @@
     height: 30px;
 }
 
-.panel-blur {
+.kt-panel-out {
     background: url("../assets/img/blur-bg-blurred.jpg");
     transition: none;
     background-attachment: fixed;
@@ -31,6 +31,12 @@
     }
     .footer-blur {
         padding: 5px 8px;
+    }
+    .dropdown-menu {
+        li {
+            min-width: 200px;
+            float: none;
+        }
     }
 }
 
@@ -84,4 +90,10 @@
     .btn-list {
         float: right;
     }
+}
+
+.kt-date-filter {
+    background: url("../assets/img/blur-bg-blurred.jpg");
+    transition: none;
+    background-attachment: fixed;
 }

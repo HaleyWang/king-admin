@@ -23,10 +23,7 @@ public class ExportGrid2Test {
     @Test
     public void export() throws Exception {
 
-        //ReflectionUtils.get
-
-
-
+        //ReflectionUtils.ge
         Column column = new Column("name", "Name");
         Column column1 = new Column("age", "Age");
 
@@ -44,7 +41,7 @@ public class ExportGrid2Test {
         grid.setColumns(Arrays.asList(column, column1));
         grid.setRows(Arrays.asList(row, row1));
 
-        File file = new File(grid.getSettings().getFileName());
+        File file = new File(grid.getSettings().getExcelName());
         System.out.println(file.getAbsoluteFile());
         OutputStream output = new FileOutputStream(file);
 

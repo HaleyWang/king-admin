@@ -4,29 +4,33 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.oukingtim.domain.BaseModel;
+import com.oukingtim.domain.customer.Customer;
 import com.oukingtim.domain.customer.CustomerGroup;
+import com.oukingtim.util.ReflectionUtils;
 import com.oukingtim.util.ShiroUtils;
 import com.oukingtim.util.StringTools;
 import com.oukingtim.util.excel.FileUtil;
 import com.oukingtim.util.exception.NormalException;
+import com.oukingtim.util.export.ExportUtils;
 import com.oukingtim.util.export.excel.ExportGrid;
 import com.oukingtim.util.export.grid.Column;
 import com.oukingtim.util.export.grid.Grid;
 import com.oukingtim.util.export.grid.Settings;
 import com.oukingtim.web.vm.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 通用Controller（增删改查）
@@ -36,6 +40,9 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
 
     @Autowired
     protected S service;
+
+    @Autowired
+    protected MessageSource messageSource;
 
     @PostMapping("export_excel")
     public void exportExcel(HttpServletRequest request, HttpServletResponse response, @RequestBody Grid grid) throws IOException {
@@ -106,23 +113,36 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
                     Object value = fields[i].get(spage.getSearch());
                     if (null != value && !value.equals("")) {
                         String fieldname = StringTools.underscoreName(fields[i].getName());
-                        wrapper.like(fieldname,value.toString());
+                        wrapper.or().like(fieldname,value.toString());
+
                     }
                     fields[i].setAccessible(false);
                 } catch (Exception e) {
                 }
             }
         }
-        return  ResultVM.ok(service.selectPage(page, wrapper)).of(getColumns(), getSettings());
+
+
+        return  ResultVM.ok(service.selectPage(page, wrapper)).of(getGridOptions());
     }
 
-    protected List<Column> getColumns() {
-        return new ArrayList<>();
+    protected Grid getGridOptions() {
+
+        Class entityClass = (Class) (ReflectionUtils.getSuperclassActualTypeArguments(getClass())[1]);
+
+        Locale locale = LocaleContextHolder.getLocale();
+
+        List<Column> cols = ExportUtils.colsData(entityClass, messageSource, locale);
+
+        String actionColumn = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "action.column", "");
+        String excelName = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "file.excelName", "untitle.xlsx");
+        Settings s =  new Settings().ofActionCol(actionColumn).ofExcelName(excelName);
+
+        return new Grid(cols, s);
     }
 
-    protected Settings getSettings() {
-        return new Settings();
-    }
+
+
 
     /**
      * 新增
@@ -184,3 +204,4 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
         }
     }
 }
+

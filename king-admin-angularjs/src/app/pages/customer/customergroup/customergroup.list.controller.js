@@ -7,14 +7,15 @@
     /** @ngInject */
     function CustomerGroupListCtrl($scope, toastr, CustomerGroupService) {
         var kt = this;
-        kt.dictlist = [];
+        kt.rows = [];
+        kt.respData = {};
         kt.addRow = function() {
             kt.inserted = {
                 id: null,
                 name: null,
                 remark: null,
             };
-            kt.dictlist.push(kt.inserted);
+            kt.rows.push(kt.inserted);
         }
         kt.save = function(dict) {
             if (dict.name == null || dict.name == '') {
@@ -34,7 +35,8 @@
                     tableState.pagination.numberOfPages = data.result.pages;
                     tableState.pagination.totalItemCount = data.result.total;
                     kt.tableState = tableState;
-                    kt.dictlist = data.result.records;
+                    kt.rows = data.result.records;
+                    kt.respData = data;
                 });
         };
 

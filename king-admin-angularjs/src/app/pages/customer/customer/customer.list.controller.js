@@ -5,14 +5,13 @@
         .controller('CustomerListCtrl', CustomerListCtrl);
 
     /** @ngInject */
-    function CustomerListCtrl($scope, Upload, $timeout, $filter, toastr, CustomerService, MarketService, CommonService, CustomerGroupService, $uibModal, $rootScope) {
+    function CustomerListCtrl($scope, Upload, $timeout, $filter, toastr, CustomerService, MarketService, CommonService, CustomerGroupService, $uibModal, $rootScope, $window) {
         var kt = this;
         kt.rows = [];
         kt.dictClassList = [];
         kt.marketList = [];
         kt.customersResp = {};
-
-
+        kt.pageSize = $window.localStorage.getItem('pageSize') || 10;
 
 
         $scope.open = function(page, size) {
@@ -27,6 +26,28 @@
                 }
             });
         };
+
+        kt.openDateFilter = function() {
+
+            var dateFilterOptions = {
+                items: [
+                    { id: "id", name: "name" },
+                    { id: "id1", name: "name1" }
+                ],
+                id: '',
+                startDate: '',
+                endDate: ''
+            };
+
+            dateFilterOptions.id = dateFilterOptions.items[0].id;
+
+            CommonService.showDateFilter(dateFilterOptions, function(dateFilterResult) {
+                console.log('arg', arguments);
+            });
+
+        };
+
+        //$scope.openDateFilter();
 
 
         $scope.uploadFiles = function(file, errFiles) {
@@ -109,7 +130,7 @@
             var showMarketCode = kt.showMarketCode;
             for (var i = 0, n = list.length; i < n; i++) {
                 var item = list[i];
-                item.marketCode = showMarketCode(item.marketId);
+                item.marketShortName = showMarketCode(item.marketId);
             }
         };
 
@@ -117,7 +138,16 @@
 
             console.log('lll');
 
-            tableState = tableState || kt.tableState;
+            tableState = tableState || kt.tableState || {};
+            tableState.search || (tableState.search = {});
+            var search = tableState.search;
+            search.phone = search.name;
+            search.phone1 = search.name;
+            search.adress = search.name;
+            search.identityNum = search.name;
+
+            $window.localStorage.setItem('pageSize', kt.pageSize);
+
 
             tableState.pagination.number = tableState.pagination.number || 5;
             CustomerService.getSmartData(tableState,
