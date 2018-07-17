@@ -1,10 +1,13 @@
 package com.oukingtim.web.vm;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
  * Created by oukingtim
  */
+@Data
 public class SmartPageVM<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -12,6 +15,8 @@ public class SmartPageVM<T> implements Serializable {
     private SmartPagination pagination;
 
     private T search;
+
+    private DateFilterParams dateFilterParams;
 
     private SmartSort sort;
 

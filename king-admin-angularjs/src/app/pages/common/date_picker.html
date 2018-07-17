@@ -2,46 +2,39 @@
     <div class="modal-header bg-info">
         <i class="ion-information-circled modal-icon"></i><span> Information</span>
     </div>
-    <div class="modal-body text-center">
+    <div class="modal-body text-left">
+
+        <div class="form-group">
+
+            <label class="control-label" for="inputSuccess1">日期字段:</label>
+            <select class="form-control" ng-model="dateFilterOptions.id" ng-options="f.id as f.name for f in dateFilterOptions.items"><option></option></select>
+        </div>
 
 
-        <h4>
-            Popup</h4>
+        <div class="form-group">
+
+            <label class="control-label" for="inputSuccess1">开始时间:</label>
 
 
-        <label>Format: 
-                <span class="muted-text">(manual alternate <em>{{altInputFormats[0]}}</em>)</span></label>
-
-        <select class="form-control" ng-model="dateFilterOptions.id" ng-options="f.id as f.name for f in dateFilterOptions.items"><option></option></select>
-
-
-
-        <label>
-开始时间:
-            
-        </label>
-
-
-        <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="options" ng-model="dateFilterOptions.startDate" is-open="opened.start" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false"
-            />
-            <span class="input-group-btn">
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="options" ng-model="dateFilterOptions.startDate" is-open="opened.start" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false"
+                />
+                <span class="input-group-btn">
                                <button type="button" class="btn btn-default" ng-click="openDatePicker('start')"><i class="glyphicon glyphicon-calendar"></i></button>
                              </span>
-        </p>
+            </p>
+        </div>
 
-        <label>
-结束时间:
-            
-    </label>
-        <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="options" ng-model="dateFilterOptions.endDate" is-open="opened.end" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false"
-            />
-            <span class="input-group-btn">
+        <div class="form-group">
+            <label class="control-label" for="inputSuccess2">结束时间:</label>
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="options" ng-model="dateFilterOptions.endDate" is-open="opened.end" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false"
+                />
+                <span class="input-group-btn">
                                    <button type="button" class="btn btn-default" ng-click="openDatePicker('end')"><i class="glyphicon glyphicon-calendar"></i></button>
                                  </span>
-        </p>
-
+            </p>
+        </div>
 
 
 

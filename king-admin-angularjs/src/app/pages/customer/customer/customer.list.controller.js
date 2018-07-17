@@ -12,6 +12,7 @@
         kt.marketList = [];
         kt.customersResp = {};
         kt.pageSize = $window.localStorage.getItem('pageSize') || 10;
+        kt.dateFilterParams = {};
 
 
         $scope.open = function(page, size) {
@@ -31,18 +32,24 @@
 
             var dateFilterOptions = {
                 items: [
-                    { id: "id", name: "name" },
-                    { id: "id1", name: "name1" }
+                    //{ id: "id", name: "name" },
+                    //{ id: "id1", name: "name1" }
                 ],
                 id: '',
                 startDate: '',
                 endDate: ''
             };
+            console.log(kt.customersResp)
 
-            dateFilterOptions.id = dateFilterOptions.items[0].id;
+            if (!kt.dateFilterParams.id) {
+                kt.dateFilterParams.id = kt.dateFilterParams.items[0].id;
+            }
 
-            CommonService.showDateFilter(dateFilterOptions, function(dateFilterResult) {
+            CommonService.showDateFilter(kt.dateFilterParams, function(dateFilterParams) {
                 console.log('arg', arguments);
+                kt.dateFilterParams = dateFilterParams;
+                kt.LoadPage();
+
             });
 
         };
@@ -146,6 +153,8 @@
             search.adress = search.name;
             search.identityNum = search.name;
 
+            tableState.dateFilterParams = kt.dateFilterParams;
+
             $window.localStorage.setItem('pageSize', kt.pageSize);
 
 
@@ -161,6 +170,9 @@
                     kt.fillData(records);
                     kt.rows = records;
                     kt.customersResp = data;
+
+                    kt.dateFilterParams.items = kt.customersResp.grid.settings.datePickerOptions;
+
                 });
         };
 

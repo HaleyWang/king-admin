@@ -52,6 +52,16 @@
 
                                         </a>
                                     </li>
+                                    <li class="hidden-md hidden-lg" role="separator" class="divider"></li>
+
+                                    <li>
+                                        <a href="javascript:void(0);" ng-click="kt.openDateFilter()" has-perms='dict.dictclass.view'>
+                                            <i class="ion-file"></i>日期: {{kt.dateFilterParams.name}}
+                                            <div>{{kt.dateFilterParams.dateRange}}</div>
+                                        </a>
+
+
+                                    </li>
                                     <li role="separator" class="divider"></li>
                                     <li class="hidden-md hidden-lg">
                                         <a href="javascript:void(0);" has-perms='dict.dictclass.add' type="file" ngf-select="uploadFiles($file, $invalidFiles)" ngf-max-height="1000" ngf-max-size="1MB">
@@ -64,13 +74,6 @@
                                         </a>
                                     </li>
 
-                                    <li>
-                                        <a href="javascript:void(0);" ng-click="kt.openDateFilter()" has-perms='dict.dictclass.view'>
-                                            <i class="ion-file"></i>日期
-                                        </a>
-
-
-                                    </li>
                                 </ul>
                             </div>
 

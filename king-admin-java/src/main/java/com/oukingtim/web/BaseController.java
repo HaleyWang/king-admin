@@ -3,9 +3,11 @@ package com.oukingtim.web;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+import com.google.common.base.Splitter;
 import com.oukingtim.domain.BaseModel;
 import com.oukingtim.domain.customer.Customer;
 import com.oukingtim.domain.customer.CustomerGroup;
+import com.oukingtim.dto.IdName;
 import com.oukingtim.util.ReflectionUtils;
 import com.oukingtim.util.ShiroUtils;
 import com.oukingtim.util.StringTools;
@@ -31,6 +33,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * 通用Controller（增删改查）
@@ -105,6 +109,17 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
         page.setOrderByField(spage.getSort().getPredicate());
         page.setAsc(spage.getSort().getReverse());
         EntityWrapper<T> wrapper = new EntityWrapper<T>();
+
+        if(spage.getDateFilterParams() != null) {
+            String id = spage.getDateFilterParams().getId();
+            String dateRange = spage.getDateFilterParams().getDateRange();
+            if(StringUtils.isNotEmpty(id) && dateRange != null && dateRange.indexOf(" - ") > 0) {
+                String[] arr = dateRange.split(" - ");
+                String fieldname = StringTools.underscoreName(id);
+                wrapper.and().between(fieldname, arr[0] + " 00:00:00", arr[1] + " 23:59:59");
+            }
+        }
+
         if (spage.getSearch()!=null){
             Field[] fields = spage.getSearch().getClass().getDeclaredFields();
             for (int i = 0; i < fields.length; i++) {
@@ -113,7 +128,7 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
                     Object value = fields[i].get(spage.getSearch());
                     if (null != value && !value.equals("")) {
                         String fieldname = StringTools.underscoreName(fields[i].getName());
-                        wrapper.or().like(fieldname,value.toString());
+                        wrapper.or().like(fieldname, value.toString());
 
                     }
                     fields[i].setAccessible(false);
@@ -121,7 +136,6 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
                 }
             }
         }
-
 
         return  ResultVM.ok(service.selectPage(page, wrapper)).of(getGridOptions());
     }
@@ -136,7 +150,14 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
 
         String actionColumn = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "action.column", "");
         String excelName = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "file.excelName", "untitle.xlsx");
-        Settings s =  new Settings().ofActionCol(actionColumn).ofExcelName(excelName);
+        String datePickerOptionsStr = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "datePicker.options", "");
+
+        List<IdName> datePickerOptions = Splitter.on(";").withKeyValueSeparator(",").split(datePickerOptionsStr).entrySet()
+                .stream().map(it -> new IdName(it.getKey(), it.getValue()))
+                .collect(Collectors.toList());
+
+        //datePicker
+        Settings s =  new Settings().ofActionCol(actionColumn).ofExcelName(excelName).ofDatePickerOptions(datePickerOptions);
 
         return new Grid(cols, s);
     }

@@ -1,5 +1,6 @@
 package com.oukingtim.util.export.grid;
 
+import com.oukingtim.dto.IdName;
 import lombok.Data;
 
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.List;
 public class Settings {
     private String actionCol;
     private String excelName;
+    private List<IdName> datePickerOptions;
     private List<String> titles;
 
     public Settings() {}
@@ -30,5 +32,10 @@ public class Settings {
         this.excelName = excelName;
         return this;
 
+    }
+
+    public Settings ofDatePickerOptions(List<IdName> datePickerOptions) {
+        this.datePickerOptions = datePickerOptions;
+        return this;
     }
 }
