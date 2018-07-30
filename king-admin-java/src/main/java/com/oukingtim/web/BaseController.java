@@ -152,9 +152,14 @@ public abstract class BaseController<S extends IService<T>, T extends BaseModel<
         String excelName = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "file.excelName", "untitle.xlsx");
         String datePickerOptionsStr = ExportUtils.getValeBySubKey(entityClass, messageSource, locale, "datePicker.options", "");
 
-        List<IdName> datePickerOptions = Splitter.on(";").withKeyValueSeparator(",").split(datePickerOptionsStr).entrySet()
-                .stream().map(it -> new IdName(it.getKey(), it.getValue()))
-                .collect(Collectors.toList());
+        List<IdName> datePickerOptions = null;
+        if(datePickerOptionsStr.indexOf(",") > 0) {
+            datePickerOptions = Splitter.on(";").withKeyValueSeparator(",").split(datePickerOptionsStr).entrySet()
+                    .stream().map(it -> new IdName(it.getKey(), it.getValue()))
+                    .collect(Collectors.toList());
+        }else {
+            datePickerOptions = new ArrayList<>();
+        }
 
         //datePicker
         Settings s =  new Settings().ofActionCol(actionColumn).ofExcelName(excelName).ofDatePickerOptions(datePickerOptions);
